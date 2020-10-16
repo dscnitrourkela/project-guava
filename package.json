@@ -1,0 +1,31 @@
+{
+  "name": "project-guava",
+  "version": "1.0.0",
+  "description": "The project repository for an open system to generate and manage certificates.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dscnitrourkela/project-guava.git"
+  },
+  "keywords": [
+    "certificate",
+    "graphql",
+    "mongo",
+    "nodejs",
+    "automate"
+  ],
+  "author": "DesignrKnight",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dscnitrourkela/project-guava/issues"
+  },
+  "homepage": "https://github.com/dscnitrourkela/project-guava#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0"
+  }
+}
