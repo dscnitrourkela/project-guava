@@ -113,19 +113,6 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.wasm
-*.wat
-*.xhtml
+
 
 # End of https://www.toptal.com/developers/gitignore/api/web,node
