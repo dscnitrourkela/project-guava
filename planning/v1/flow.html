@@ -1,0 +1,20 @@
+<html>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    Certificate Request Process
+    <div class="mermaid">
+      stateDiagram
+      [*] --> InitiateByOrganizer
+      InitiateByOrganizer --> Approver1
+      Approver1 --> InitiateByOrganizer
+      Approver1 --> Approver2
+      Approver2 --> InitiateByOrganizer
+      Approver2 --> ApproverN
+      ApproverN --> InitiateByOrganizer
+      ApproverN --> ReceivedByInitiator
+      ReceivedByInitiator --> BatchProcessInit
+      BatchProcessInit --> [*]
+    </div>
+  </body>
+</html>
