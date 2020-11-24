@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 12.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,6 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: cd planning/v1 && node ./save.js
+    - run: npm install -g mermaid.cli 
     - run: cd planning/v1 && mmdc -i flow.mmd -o flow.svg
     - run: cd planning/v1 && mmdc -i collectionRelationship.mmd -o collectionRelationship.svg
     - name: Commit files
