@@ -4,6 +4,7 @@ const user ={
     name:"String",
     displayPicture:"String",
     firebaseId: "String",
+    accessLevel:"String",
     requests: [request._id],
     signs:[sign.id],
     certificates:[
@@ -31,16 +32,18 @@ const request={
             user: user._id,
             status: "Integer",
             pixel:["x","y"],
-            scale:"Integer"
+            scale:"Integer", 
+            approvedAt: "Timestamp"
         }],
     certificateInfo:{
         template:"String",
-        data: "String",
+        data: "String", //not in database
     },
     pixelMap:[{
         columnName:"ColumnName",
         pixel:["x","y"],
-        fontSize:"Integer"
+        fontSize:"Integer",
+        fontWeight:"Integer"
     }],
     font:"String",    
     createdAt:"datetime",
@@ -53,14 +56,17 @@ const request={
 const certificate={
     _id="String",
     request: request.id,
-    name: request.title,
+    title: request.title,
     description: request.description,
     template: "String",
+    font: request.font,
+    mail:user.mail,  
     pixelMap: [
         {
             value:"String",
             pixel:["x","y"],
-            fontSize:"Integer"
+            fontSize:"Integer",
+            fontWeight: "Integer"
     }],
     signMap:[{
         id:sign._id,
