@@ -13,3 +13,8 @@
 | Reject certificate                        | Write                         | Write to Mongo                            |
 | Fetch all certificate of mail             | Read                          | Read by filter from Mongo and fetch image |
 
+
+
+
+![](./flow.svg)
+![](./collectionRelationship.svg)
