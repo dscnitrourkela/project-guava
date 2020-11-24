@@ -1,0 +1,10 @@
+
+      stateDiagram-v2
+      users --> certificates: 1toN
+      certificates --> users: Nto1
+      users --> sign: 1toN
+      sign --> requests: 1toN
+      requests --> sign: 1toN
+      certificates --> requests: Nto1
+      requests --> certificates: 1toN
+    

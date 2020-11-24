@@ -1,0 +1,13 @@
+
+      stateDiagram
+      [*] --> InitiateByOrganizer
+      InitiateByOrganizer --> Approver1
+      Approver1 --> InitiateByOrganizer
+      Approver1 --> Approver2
+      Approver2 --> InitiateByOrganizer
+      Approver2 --> ApproverN
+      ApproverN --> InitiateByOrganizer
+      ApproverN --> ReceivedByInitiator
+      ReceivedByInitiator --> BatchProcessInit
+      BatchProcessInit --> [*]
+    
