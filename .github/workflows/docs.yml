@@ -3,12 +3,7 @@
 
 name: Docs CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request_target:
-    branches: [ master ]
-
+on: pull_request_target
 jobs:
   build:
 
