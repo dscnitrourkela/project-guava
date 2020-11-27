@@ -1,27 +1,17 @@
 # This workflow will do a complete formatting as per the prettier config and make the necessary changes.
 
-name: Format
-
 on:
-  pull_request:
-    branches: [master]
+  push:
+    branches: [ master ]
+
+name: Node Code Formatter
 
 jobs:
-  format:
+  lint:
+    name: Node Code Formatter
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with: 
-          node-version: ${{ matrix.node-version }}
-      - name: Format
-        run: |
-          npm ci
-          npm run format
-      - name: Commit Changes
-        uses: stefanzweifel/git-auto-commit-action@v4.1.2
-        with:
-          commit_message: Apply Prettier formatting Changes
-          branch: ${{github.ref}}
-        
+    - name: Node Code Formatter
+      uses: MarvinJWendt/run-node-formatter@stable
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
