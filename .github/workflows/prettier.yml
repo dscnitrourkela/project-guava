@@ -1,6 +1,6 @@
 # This workflow will do a complete formatting as per the prettier config and make the necessary changes.
 
-on: push
+on: pull_request
 
 name: Node Code Formatter
 
