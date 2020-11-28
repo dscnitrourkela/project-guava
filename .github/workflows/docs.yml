@@ -33,7 +33,7 @@ jobs:
         git config pull.rebase false
         git add .
         git commit -m "Add Images For Docs"
-        git pull origin master
+        git pull origin docs
         git add .
         git commit -m "Add Images For Docs"
         git push origin
