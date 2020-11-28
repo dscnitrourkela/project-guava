@@ -30,10 +30,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git config pull.rebase false
-        git add .
-        git commit -m "Add Images For Docs"
-        git pull origin docs
         git add .
         git commit -m "Add Images For Docs"
     - name: Push changes
