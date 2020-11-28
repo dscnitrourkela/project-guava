@@ -31,7 +31,10 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Add Images For Docs" -a
+        git commit -m "Add Images For Docs"
+        git pull origin master
+        git add .
+        git commit -m "Add Images For Docs"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
