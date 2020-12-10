@@ -1,3 +1,9 @@
+## Handling certificate for users who are not in db
+We will be having user's mail in certificate collection. When a new user is created, we will search the certificate collection by user.mail and add all certificate to users
+
+## Auth
+We will have a dedicated route in Express that would be for auth outside of GraphQL as a middleware
+
 ## Potential Operations on the Database
 
 | Operation                                 | Type                          | Description                               |
