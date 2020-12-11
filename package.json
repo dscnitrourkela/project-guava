@@ -4,7 +4,7 @@
   "description": "The project repository for an open system to generate and manage certificates.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha test/*.test.js",
     "format": "prettier --write './**/*.js'",
     "lint": "eslint --fix './**/*.js'",
     "start": "node index.js",
@@ -41,6 +41,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
-    "prettier": "^2.2.0"
+    "prettier": "^2.2.0",
+    "supertest": "^6.0.1"
   }
 }
