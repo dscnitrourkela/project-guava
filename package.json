@@ -4,9 +4,11 @@
   "description": "The project repository for an open system to generate and manage certificates.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "format": "prettier --write './**/*.js'",
-    "lint": "eslint --fix './**/*.js'"
+    "lint": "eslint --fix './**/*.js'",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -31,11 +33,14 @@
     "graphql": "^15.3.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^7.14.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.1.4",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6",
     "prettier": "^2.2.0"
   }
 }
