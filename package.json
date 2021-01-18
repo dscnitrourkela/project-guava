@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "description": "The project repository for an open system to generate and manage certificates.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "format": "prettier --write './**/*.js'",
     "lint": "eslint --fix './**/*.js'",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
