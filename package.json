@@ -40,6 +40,8 @@
     "mongoose": "^5.11.12"
   },
   "devDependencies": {
+    "colors": "^1.4.0",
+    "consola": "^2.15.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",

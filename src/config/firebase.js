@@ -1,14 +1,17 @@
 import admin from 'firebase-admin';
 import serviceAccount from './service_account.js';
 
+// Utilities
+import { consoleSuccess, consoleError } from '../utils/console.js';
+
 try {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
   });
 
-  console.info('Project-Guava Server: Firebase Admin SDK Initialized');
+  consoleSuccess('Project-Guava Server: Firebase Admin SDK Initialized');
 } catch (error) {
-  console.error(
+  consoleError(
     new Error('Project-Guava Server: Firebase Admin SDK Initialization Error'),
     error,
   );
