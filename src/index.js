@@ -3,14 +3,15 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import consola from 'consola';
 // import csurf from 'csurf';
 
 // GraphQL Schema
 import schema from './graphql/index.js';
 
 // Initialize Firebase and Mongoose Admin SDK
-// import './config/firebase';
-// import './config/mongoose';
+import './config/mongoose.js';
+import './config/firebase.js';
 
 // Create Express app instance
 const app = express();
@@ -46,14 +47,14 @@ apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, (error) => {
   if (error)
-    console.error(
+    consola.error(
       new Error(
         `Project-Guava Server: Apollo-Express Server Error on Port ${PORT}`,
       ),
       error,
     );
 
-  console.info(
+  consola.info(
     `Project-Guava Server: Apollo-Express Server Started on Port ${PORT}`,
   );
 });
