@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 // Utilities
-import { consoleSuccess, consoleError } from '../utils/console.js';
+import logger from './winston.js';
 
 // Configure dotenv as this is one of the first files to load
 dotenv.config();
@@ -17,7 +17,7 @@ const options = {
 mongoose.connect(process.env.MONGO_APP_URI, options);
 
 mongoose.connection.on('error', (error) => {
-  consoleError(
+  logger.error(
     new Error(
       'Project-Guava Server: Mongoose, MongoDB SDK Initialization Error ',
     ),
@@ -26,5 +26,5 @@ mongoose.connection.on('error', (error) => {
 });
 
 mongoose.connection.once('open', () => {
-  consoleSuccess('Project-Guava Server: Mongoose, MongoDB SDK Initialized');
+  logger.info('Project-Guava Server: Mongoose, MongoDB SDK Initialized');
 });

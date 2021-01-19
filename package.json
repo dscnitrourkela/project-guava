@@ -37,10 +37,10 @@
     "firebase-admin": "^9.4.2",
     "graphql": "^15.4.0",
     "mongodb": "^3.6.3",
-    "mongoose": "^5.11.12"
+    "mongoose": "^5.11.12",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
-    "colors": "^1.4.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^7.1.0",

@@ -13,13 +13,7 @@ import './config/mongoose.js';
 import './config/firebase.js';
 
 // Utilities
-import {
-  consoleSuccess,
-  consoleError,
-  consoleInfo,
-  consoleWarn,
-  consoleLog,
-} from './utils/console.js';
+import logger from './config/winston.js';
 
 // Create Express app instance
 const app = express();
@@ -55,14 +49,7 @@ apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, (error) => {
   if (error)
-    consoleError(
-      new Error(
-        `Project-Guava Server: Apollo-Express Server Error on Port ${PORT}`,
-      ),
-      error,
-    );
+    logger(new Error(`Apollo-Express Server Error on Port ${PORT}`), error);
 
-  consoleSuccess(
-    `Project-Guava Server: Apollo-Express Server Started on Port ${PORT}`,
-  );
+  logger.info(`Apollo-Express Server Started on Port ${PORT}`);
 });

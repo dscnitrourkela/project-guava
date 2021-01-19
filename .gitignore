@@ -115,3 +115,6 @@ dist
 
 # Firebase Service Account
 service_account.js
+
+# Winston Logs
+winston_logs
