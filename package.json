@@ -1,14 +1,15 @@
 {
   "name": "project-guava",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "The project repository for an open system to generate and manage certificates.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "mocha test/*.test.js",
-    "format": "prettier --write './**/*.js'",
-    "lint": "eslint --fix './**/*.js'",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "format": "prettier --write '**/*.js'",
+    "lint:fix": "eslint --fix '**/*.js'",
+    "lint:find": "eslint '**/*.js",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,27 +22,31 @@
     "nodejs",
     "automate"
   ],
-  "author": "DesignrKnight",
+  "author": "dscnitrourkela",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dscnitrourkela/project-guava/issues"
   },
   "homepage": "https://github.com/dscnitrourkela/project-guava#readme",
   "dependencies": {
+    "apollo-server-express": "^2.19.2",
+    "cloudinary": "^1.23.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-graphql": "^0.11.0",
-    "graphql": "^15.3.0"
+    "firebase-admin": "^9.4.2",
+    "graphql": "^15.4.0",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.12",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^7.14.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "mocha": "^8.2.1",
-    "nodemon": "^2.0.6",
-    "prettier": "^2.2.0",
-    "supertest": "^6.0.1"
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
   }
 }

@@ -113,6 +113,8 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Firebase Service Account
+service_account.js
 
-
-# End of https://www.toptal.com/developers/gitignore/api/web,node
+# Winston Logs
+winston_logs
