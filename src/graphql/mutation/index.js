@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { GraphQLObjectType } from 'graphql';
 
 const Mutation = new GraphQLObjectType({

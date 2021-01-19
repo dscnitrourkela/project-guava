@@ -7,10 +7,7 @@ const logFormat = combine(
   colorize({ all: true }),
   label({ label: 'Project-Guava' }),
   timestamp({ format: 'YY-MM-DD HH:MM:SS' }),
-  printf(
-    ({ level, message, label, timestamp }) =>
-      `[${timestamp}] [${label}] ${level} : ${message}`,
-  ),
+  printf(({ level, message, label, timestamp }) => `[${timestamp}] [${label}] ${level} : ${message}`)
 );
 
 const options = {

@@ -20,11 +20,8 @@ const app = express();
 
 // Setup Cross-Origin Resource Sharing for the development environment
 // localhost:3000 would be the frontend port on which the app is running
-var corsOptions = {
-  origin:
-    process.env.NODE_ENV !== 'production'
-      ? 'http://localhost:3000'
-      : 'https://certificate.dscnitrourkela.org',
+const corsOptions = {
+  origin: process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : 'https://certificate.dscnitrourkela.org',
 };
 
 // Middlewares
@@ -36,7 +33,7 @@ app.use(cookieParser());
 
 // Initialize Apollo Server
 const apolloServer = new ApolloServer({
-  schema: schema,
+  schema,
   cors: corsOptions,
   playground: process.env.NODE_ENV !== 'production',
   debug: process.env.NODE_ENV !== 'production',
@@ -47,9 +44,8 @@ apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
 
 // Start Express Server on defined port
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, (error) => {
-  if (error)
-    logger(new Error(`Apollo-Express Server Error on Port ${PORT}`), error);
+app.listen(PORT, error => {
+  if (error) {logger(new Error(`Apollo-Express Server Error on Port ${PORT}`), error);}
 
   logger.info(`Apollo-Express Server Started on Port ${PORT}`);
 });

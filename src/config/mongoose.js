@@ -16,13 +16,8 @@ const options = {
 };
 mongoose.connect(process.env.MONGO_APP_URI, options);
 
-mongoose.connection.on('error', (error) => {
-  logger.error(
-    new Error(
-      'Project-Guava Server: Mongoose, MongoDB SDK Initialization Error ',
-    ),
-    error,
-  );
+mongoose.connection.on('error', error => {
+  logger.error(new Error('Project-Guava Server: Mongoose, MongoDB SDK Initialization Error '), error);
 });
 
 mongoose.connection.once('open', () => {
