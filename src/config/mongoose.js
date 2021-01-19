@@ -16,10 +16,12 @@ const options = {
 };
 mongoose.connect(process.env.MONGO_APP_URI, options);
 
-mongoose.connection.on('error', error => {
-  logger.error(new Error('Project-Guava Server: Mongoose, MongoDB SDK Initialization Error '), error);
+mongoose.connection.on('error', (error) => {
+  logger.error(new Error('Mongoose, MongoDB SDK Initialization Error '), error);
 });
 
 mongoose.connection.once('open', () => {
-  logger.info('Project-Guava Server: Mongoose, MongoDB SDK Initialized');
+  logger.info('Mongoose, MongoDB SDK Initialized');
+  // eslint-disable-next-line
+  console.log('-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --');
 });

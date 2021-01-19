@@ -116,7 +116,7 @@ rules:
     - as-needed
   arrow-parens:
     - error
-    - as-needed
+    - always
   arrow-spacing:
     - error
     - after: true

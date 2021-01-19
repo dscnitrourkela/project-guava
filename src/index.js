@@ -8,12 +8,13 @@ import cookieParser from 'cookie-parser';
 // GraphQL Schema
 import schema from './graphql/index.js';
 
-// Initialize Firebase and Mongoose Admin SDK
-import './config/mongoose.js';
-import './config/firebase.js';
-
 // Utilities
 import logger from './config/winston.js';
+
+// Initialize Firebase, Mongoose, Cloudinary Admin SDK
+import './config/mongoose.js';
+import './config/firebase.js';
+import './config/cloudinary.js';
 
 // Create Express app instance
 const app = express();
@@ -44,8 +45,10 @@ apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
 
 // Start Express Server on defined port
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, error => {
-  if (error) {logger(new Error(`Apollo-Express Server Error on Port ${PORT}`), error);}
+app.listen(PORT, (error) => {
+  if (error) {
+    logger(new Error(`Apollo-Express Server Error on Port ${PORT}`), error);
+  }
 
   logger.info(`Apollo-Express Server Started on Port ${PORT}`);
 });

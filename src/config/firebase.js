@@ -10,9 +10,9 @@ try {
     credential: admin.credential.cert(serviceAccount),
   });
 
-  logger.info('Project-Guava Server: Firebase Admin SDK Initialized');
+  logger.info('Firebase Admin SDK Initialized');
 } catch (error) {
-  logger.error(new Error('Project-Guava Server: Firebase Admin SDK Initialization Error'), error);
+  logger.error(new Error('Firebase Admin SDK Initialization Error'), error);
 }
 
 export const auth = admin.auth();
