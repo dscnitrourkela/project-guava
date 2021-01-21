@@ -9,6 +9,7 @@ const requestSchema = new Schema({
   initiater: {
     type: String,
     required: true,
+    trim: true,
   },
   title: {
     type: String,
@@ -16,6 +17,7 @@ const requestSchema = new Schema({
     default: 'Default Title',
     minlength: [10, 'Very short title, minimum 10 characters required'],
     maxlength: [20, 'Too long title, 20 characters maximum length'],
+    trim: true,
   },
   description: {
     type: String,
@@ -23,6 +25,7 @@ const requestSchema = new Schema({
     default: 'Default Description',
     minlength: [20, 'Very short description, minimum 20 characters required'],
     maxlength: [50, 'Too long description, 50 characters maximum length'],
+    trim: true,
   },
   status: {
     type: String,
@@ -61,6 +64,7 @@ const requestSchema = new Schema({
     data: {
       type: String,
       required: true,
+      trim: true,
     },
   },
   pixelMap: [
@@ -100,10 +104,12 @@ const requestSchema = new Schema({
   createdBy: {
     type: String,
     required: true,
+    trim: true,
   },
   updatedBy: {
     type: String,
     required: true,
+    trim: true,
   },
   schemaVersion: {
     type: Number,

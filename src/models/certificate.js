@@ -6,6 +6,7 @@ const certificateSchema = new Schema({
     type: String,
     required: true,
     default: null,
+    trim: true,
   },
   title: {
     type: String,
@@ -13,6 +14,7 @@ const certificateSchema = new Schema({
     default: 'Default Title',
     minlength: [10, 'Very short title, minimum 10 characters required'],
     maxlength: [20, 'Too long title, 20 characters maximum length'],
+    trim: true,
   },
   description: {
     type: String,
@@ -20,6 +22,7 @@ const certificateSchema = new Schema({
     default: 'Default Description',
     minlength: [20, 'Very short description, minimum 20 characters required'],
     maxlength: [50, 'Too long description, 50 characters maximum length'],
+    trim: true,
   },
   template: {
     src: { type: String, required: true },
@@ -34,6 +37,7 @@ const certificateSchema = new Schema({
     type: String,
     required: true,
     default: null,
+    trim: true,
   },
   pixelMap: [
     {
@@ -85,10 +89,12 @@ const certificateSchema = new Schema({
   createdBy: {
     type: String,
     required: true,
+    trim: true,
   },
   updatedBy: {
     type: String,
     required: true,
+    trim: true,
   },
   schemaVersion: {
     type: Number,
@@ -96,5 +102,16 @@ const certificateSchema = new Schema({
     default: 1.0,
   },
 });
+
+certificateSchema
+  .path('mail')
+  .validate(
+    mail,
+    () =>
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/u.test(
+        mail
+      ),
+    'Invalid Email Address'
+  );
 
 export default model('certificate', certificateSchema);
