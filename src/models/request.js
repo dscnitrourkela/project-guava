@@ -1,11 +1,14 @@
 import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+const {
+  Schema,
+  model,
+  Types: { ObjectId },
+} = mongoose;
 
-const certificateSchema = new Schema({
-  request: {
+const requestSchema = new Schema({
+  initiater: {
     type: String,
     required: true,
-    default: null,
   },
   title: {
     type: String,
@@ -21,19 +24,44 @@ const certificateSchema = new Schema({
     minlength: [20, 'Very short description, minimum 20 characters required'],
     maxlength: [50, 'Too long description, 50 characters maximum length'],
   },
-  template: {
-    src: { type: String, required: true },
-    blurHash: { type: String, required: true },
-  },
-  font: {
+  status: {
     type: String,
+    enum: ['Un-Initiated', 'Initiated', 'Approved'],
     required: true,
-    default: 'Arial',
+    default: 'Un-Initiated',
   },
-  mail: {
-    type: String,
-    required: true,
-    default: null,
+  approvers: [
+    {
+      user: { type: ObjectId, required: true },
+      status: {
+        type: String,
+        enum: ['Rejected', 'Approved'],
+        required: true,
+      },
+      pixel: {
+        x: { type: Number, required: true },
+        y: { type: Number, required: true },
+      },
+      scale: {
+        type: Number,
+        required: true,
+        default: 1,
+      },
+      approvedAt: {
+        type: Date,
+        required: false,
+      },
+    },
+  ],
+  certificateInfo: {
+    template: {
+      src: { type: String, required: true },
+      blurHash: { type: String, required: true },
+    },
+    data: {
+      type: String,
+      required: true,
+    },
   },
   pixelMap: [
     {
@@ -54,24 +82,11 @@ const certificateSchema = new Schema({
       },
     },
   ],
-  signMap: [
-    {
-      id: {
-        type: String,
-        required: true,
-        default: null,
-      },
-      pixel: {
-        x: { type: Number, required: true },
-        y: { type: Number, required: true },
-      },
-      scale: {
-        type: Number,
-        required: true,
-        default: 1,
-      },
-    },
-  ],
+  font: {
+    type: String,
+    required: true,
+    default: 'Arial',
+  },
   createdAt: {
     type: Number,
     required: true,
@@ -97,4 +112,4 @@ const certificateSchema = new Schema({
   },
 });
 
-export default model('certificate', certificateSchema);
+export default model('request', requestSchema);
