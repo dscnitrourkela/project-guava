@@ -6,8 +6,9 @@ const userSchema = new Schema(
     mail: {
       type: String,
       required: true,
-      default: null,
       trim: true,
+      unique: true,
+      lowercase: true,
     },
     name: {
       type: String,
@@ -28,25 +29,24 @@ const userSchema = new Schema(
     },
     firebaseID: {
       type: String,
-      required: true,
+      required: false, // TODO: Change to true later
     },
     accessLevel: [
       {
         type: String,
-        required: true,
+        required: false, // TODO: Change to true later
       },
     ],
     requests: [Schema.ObjectId],
     signs: [Schema.ObjectId],
-    certificates: [Schema.ObjectId],
     createdBy: {
-      type: String,
-      required: true,
+      type: Schema.ObjectId,
+      required: false, // TODO: Change to true later
       trim: true,
     },
     updatedBy: {
-      type: String,
-      required: true,
+      type: Schema.ObjectId,
+      required: false, // TODO: Change to true later
       trim: true,
     },
     schemaVersion: {
@@ -67,6 +67,7 @@ userSchema
         mail
       ),
     'Invalid Email Address'
-  );
+  )
+  .index({ unique: true });
 
 export default model('user', userSchema);

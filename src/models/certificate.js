@@ -6,23 +6,21 @@ const certificateSchema = new Schema(
     request: {
       type: Schema.ObjectId,
       required: true,
-      default: null,
-      trim: true,
     },
     title: {
       type: String,
       required: true,
       default: 'Default Title',
       minlength: [10, 'Very short title, minimum 10 characters required'],
-      maxlength: [20, 'Too long title, 20 characters maximum length'],
+      maxlength: [100, 'Too long title, 100 characters maximum length'],
       trim: true,
     },
     description: {
       type: String,
       required: true,
       default: 'Default Description',
-      minlength: [20, 'Very short description, minimum 20 characters required'],
-      maxlength: [50, 'Too long description, 50 characters maximum length'],
+      minlength: [140, 'Very short description, minimum 140 characters required'],
+      maxlength: [720, 'Too long description, 720 characters maximum length'],
       trim: true,
     },
     template: {
@@ -37,8 +35,8 @@ const certificateSchema = new Schema(
     mail: {
       type: String,
       required: true,
-      default: null,
       trim: true,
+      lowercase: true,
     },
     pixelMap: [
       {
@@ -64,7 +62,6 @@ const certificateSchema = new Schema(
         id: {
           type: Schema.ObjectId,
           required: true,
-          default: null,
         },
         pixel: {
           x: { type: Number, required: true },
@@ -78,13 +75,13 @@ const certificateSchema = new Schema(
       },
     ],
     createdBy: {
-      type: String,
-      required: true,
+      type: Schema.ObjectId,
+      required: false, // TODO: change to true later
       trim: true,
     },
     updatedBy: {
-      type: String,
-      required: true,
+      type: Schema.ObjectId,
+      required: false, // TODO: change to true later
       trim: true,
     },
     schemaVersion: {

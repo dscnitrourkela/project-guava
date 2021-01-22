@@ -13,14 +13,9 @@ const signSchema = new Schema(
       trim: true,
     },
     image: {
-      src: {
-        type: String,
-        required: true,
-      },
-      blurHash: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: true,
+      trim: true,
     },
     designation: {
       type: String,
@@ -28,13 +23,13 @@ const signSchema = new Schema(
       trim: true,
     },
     createdBy: {
-      type: String,
-      required: true,
+      type: Schema.ObjectId,
+      required: false, // TODO: change to true later
       trim: true,
     },
     updatedBy: {
-      type: String,
-      required: true,
+      type: Schema.ObjectId,
+      required: false, // TODO: change to true later
       trim: true,
     },
     schemaVersion: {
