@@ -1,60 +1,62 @@
 import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
-const userSchema = new Schema({
-  mail: {
-    type: String,
-    required: true,
-    default: null,
-    trim: true,
+const userSchema = new Schema(
+  {
+    mail: {
+      type: String,
+      required: true,
+      default: null,
+      trim: true,
+    },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    displayPicture: {
+      src: {
+        type: String,
+        required: false,
+        // We can have a default image
+      },
+      blurHash: {
+        type: String,
+        required: false,
+        // We can have a default image
+      },
+    },
+    firebaseID: {
+      type: String,
+      required: true,
+    },
+    accessLevel: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    requests: [Schema.ObjectId],
+    signs: [Schema.ObjectId],
+    certificates: [Schema.ObjectId],
+    createdBy: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    updatedBy: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    schemaVersion: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
   },
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  displayPicture: {
-    type: String,
-    required: false,
-    // We can have a default image
-  },
-  firebaseID: {
-    type: String,
-    required: true,
-  },
-  accessLevel: {
-    type: String,
-    required: true,
-  },
-  requests: [String],
-  signs: [String],
-  certificates: [String],
-  createdAt: {
-    type: Number,
-    required: true,
-    default: Date.now(),
-  },
-  updatedAt: {
-    type: Number,
-    required: true,
-    default: Date.now(),
-  },
-  createdBy: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  updatedBy: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  schemaVersion: {
-    type: Number,
-    required: false,
-    default: 1.0,
-  },
-});
+  { timestamps: true }
+);
 
 userSchema
   .path('mail')
