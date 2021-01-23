@@ -1,0 +1,15 @@
+{
+  "testEnvironment": "node",
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "./planning"
+  ],
+  "moduleNameMapper": {
+    "/^mongoose$/": "./node_modules/mongoose"
+  },
+  "coverageReporters": [
+    "lcov",
+    "html"
+  ],
+  "setupFilesAfterEnv": ["jest-extended"]
+}
