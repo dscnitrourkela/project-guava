@@ -2,7 +2,6 @@ import { expect } from '@jest/globals';
 import { graphql } from 'graphql';
 
 import schema from '../../graphql/index.js';
-// import { Welcome } from '../../models/index.js';
 import { beforeTest, afterTest } from '../../utils/mongoMemoryServer.js';
 
 beforeEach(async () => {
@@ -14,13 +13,6 @@ afterEach(async () => {
 jest.setTimeout(600000);
 
 it('should create a new welcome message document', async () => {
-  // const welcome = new Welcome({
-  //   message: 'This is test message!',
-  //   status: 200,
-  // });
-  // await welcome.save();
-
-  //language=GraphQL
   const query = `
     mutation {
       addNewWelcomeMessage(message: "This is a test Message", status: 200) {

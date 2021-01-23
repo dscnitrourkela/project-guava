@@ -8,6 +8,7 @@ import { beforeTest, afterTest } from '../../utils/mongoMemoryServer.js';
 beforeEach(async () => {
   await beforeTest();
 });
+
 afterEach(async () => {
   await afterTest();
 });
