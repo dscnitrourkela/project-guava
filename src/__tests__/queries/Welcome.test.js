@@ -1,9 +1,9 @@
 import { expect } from '@jest/globals';
 import { graphql } from 'graphql';
 
-import schema from '../graphql/index.js';
-import { Welcome } from '../models/index.js';
-import { beforeTest, afterTest } from '../utils/mongoMemoryServer.js';
+import schema from '../../graphql/index.js';
+import { Welcome } from '../../models/index.js';
+import { beforeTest, afterTest } from '../../utils/mongoMemoryServer.js';
 
 beforeEach(async () => {
   await beforeTest();
