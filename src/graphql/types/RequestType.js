@@ -1,17 +1,16 @@
-import { GraphQLString, GraphQLObjectType, GraphQLList, GraphQLEnumType, GraphQLID } from 'graphql';
+import { GraphQLString, GraphQLObjectType, GraphQLList, GraphQLEnumType } from 'graphql';
 import { GraphQLDateTime } from 'graphql-iso-date';
 
-import { CertificateInfo, Approvers, PixelMap, UserDetails } from './common.js';
+import { CertificateInfo, Approver, PixelMap, UserDetails } from './common.js';
 
 export default new GraphQLObjectType({
-  name: 'Welcome',
+  name: 'RequestType',
   description: 'Request object created by the certificate initiator for approval',
   fields: () => ({
-    initiatorID: { type: GraphQLID },
     initiator: UserDetails,
     title: { type: GraphQLString },
     description: { type: GraphQLString },
-    approvers: { type: GraphQLList(Approvers) },
+    approvers: { type: GraphQLList(Approver) },
     certificateInfo: { type: CertificateInfo },
     pixelMap: { type: PixelMap },
     font: { type: GraphQLString },

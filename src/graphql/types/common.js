@@ -4,7 +4,7 @@ import { GraphQLDateTime } from 'graphql-iso-date';
 import { User } from '../../models/index.js';
 import { UserType } from './User.js';
 
-export const Approvers = new GraphQLObjectType({
+export const Approver = new GraphQLObjectType({
   name: 'Request Approvers',
   fields: () => ({
     user: { type: GraphQLID },
