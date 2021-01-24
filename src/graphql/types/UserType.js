@@ -1,5 +1,6 @@
 import { GraphQLString, GraphQLObjectType, GraphQLList, GraphQLID } from 'graphql';
-import { GraphQLDateTime } from 'graphql-iso-date';
+import graphqlIsoDatefrom from 'graphql-iso-date';
+const { GraphQLDateTime } = graphqlIsoDatefrom;
 
 import { UserDetails } from './common.js';
 import RequestType from './RequestType.js';

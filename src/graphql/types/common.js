@@ -1,8 +1,9 @@
 import { GraphQLString, GraphQLInt, GraphQLObjectType, GraphQLID, GraphQLEnumType } from 'graphql';
-import { GraphQLDateTime } from 'graphql-iso-date';
+import graphqlIsoDatefrom from 'graphql-iso-date';
+const { GraphQLDateTime } = graphqlIsoDatefrom;
 
 import { User } from '../../models/index.js';
-import { UserType } from './User.js';
+import UserType from './UserType.js';
 
 export const Approver = new GraphQLObjectType({
   name: 'Request Approvers',

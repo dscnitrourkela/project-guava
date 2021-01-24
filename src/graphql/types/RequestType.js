@@ -1,5 +1,6 @@
 import { GraphQLString, GraphQLObjectType, GraphQLList, GraphQLEnumType } from 'graphql';
-import { GraphQLDateTime } from 'graphql-iso-date';
+import graphqlIsoDatefrom from 'graphql-iso-date';
+const { GraphQLDateTime } = graphqlIsoDatefrom;
 
 import { CertificateInfo, Approver, PixelMap, UserDetails } from './common.js';
 
