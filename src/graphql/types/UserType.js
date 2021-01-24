@@ -1,10 +1,14 @@
 import { GraphQLString, GraphQLObjectType, GraphQLList, GraphQLID } from 'graphql';
 import graphqlIsoDatefrom from 'graphql-iso-date';
-const { GraphQLDateTime } = graphqlIsoDatefrom;
 
+// Types
 import { CreatedByDetails } from './common.js';
 import RequestType from './RequestType.js';
+
+// Models
 import Request from '../../models/request.js';
+
+const { GraphQLDateTime } = graphqlIsoDatefrom;
 
 export default new GraphQLObjectType({
   name: 'UserType',

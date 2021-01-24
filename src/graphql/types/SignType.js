@@ -1,9 +1,11 @@
 import { GraphQLString, GraphQLObjectType, GraphQLID } from 'graphql';
 import graphqlIsoDatefrom from 'graphql-iso-date';
-const { GraphQLDateTime } = graphqlIsoDatefrom;
 
+// Types
 import { CreatedByDetails } from './common.js';
 import UserType from './UserType.js';
+
+const { GraphQLDateTime } = graphqlIsoDatefrom;
 
 export default new GraphQLObjectType({
   name: 'SignType',

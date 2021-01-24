@@ -1,10 +1,14 @@
 import { GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList } from 'graphql';
 import graphqlIsoDatefrom from 'graphql-iso-date';
-const { GraphQLDateTime } = graphqlIsoDatefrom;
 
+// Models
 import Request from '../../models/request.js';
+
+// Types
 import { PixelMap, CreatedByDetails } from './common.js';
 import RequestType from './RequestType';
+
+const { GraphQLDateTime } = graphqlIsoDatefrom;
 
 export default new GraphQLObjectType({
   name: 'SignType',
