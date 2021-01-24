@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const requestSchema = new Schema(
   {
-    initiater: {
+    initiator: {
       type: Schema.ObjectId,
       required: true,
     },
