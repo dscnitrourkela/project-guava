@@ -4,6 +4,7 @@ import graphqlIsoDatefrom from 'graphql-iso-date';
 // Types
 import { CreatedByDetails } from './common.js';
 import RequestType from './RequestType.js';
+import SignType from './SignType.js';
 
 // Models
 import Request from '../../models/request.js';
@@ -18,7 +19,7 @@ export default new GraphQLObjectType({
     name: { type: GraphQLString },
     displayPicture: {
       type: new GraphQLObjectType({
-        name: 'User Display Picture',
+        name: 'UserDisplayPicture',
         fields: () => ({
           src: { type: GraphQLString },
           blurHash: { type: GraphQLString },

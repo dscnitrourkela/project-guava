@@ -28,7 +28,7 @@ export default new GraphQLObjectType({
     description: { type: GraphQLString },
     template: {
       type: new GraphQLObjectType({
-        name: 'Certificate Template',
+        name: 'CertificateTemplate',
         fields: () => ({
           src: { type: GraphQLString },
           blurHash: { type: GraphQLString },
@@ -37,13 +37,13 @@ export default new GraphQLObjectType({
     },
     font: { type: GraphQLString },
     mail: { type: GraphQLString },
-    pixelMap: { type: PixelMap },
+    pixelMap: { type: PixelMap('CertificatePixelMap') },
     signMap: {
       type: new GraphQLList({
         id: { type: GraphQLID },
         pixel: {
           type: new GraphQLObjectType({
-            name: 'Approvers Pixel Map',
+            name: 'ApproversPixelMap',
             fields: () => ({
               x: { type: GraphQLInt },
               y: { type: GraphQLInt },

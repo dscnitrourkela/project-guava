@@ -1,8 +1,8 @@
 import User from '../../models/user.js';
 
-import logger from './winston.js';
+import logger from '../../config/winston.js';
 
-export const addUser = async (parent, args) => {
+export default async (parent, args) => {
   const { id, name, displayPicture, blurHash } = args;
   const existingUser = await User.findById(id);
 

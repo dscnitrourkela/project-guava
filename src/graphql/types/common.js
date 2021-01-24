@@ -5,76 +5,79 @@ const { GraphQLDateTime } = graphqlIsoDatefrom;
 import { User } from '../../models/index.js';
 import UserType from './UserType.js';
 
-export const Approver = new GraphQLObjectType({
-  name: 'Request Approvers',
-  fields: () => ({
-    user: {
-      type: GraphQLID,
-      async resolve(parent) {
-        const user = await User.findById(parent.user);
-        if (!user) {
-          throw new Error('Initiator not found.');
-        }
-        return user;
-      },
-    },
-    status: {
-      type: new GraphQLEnumType({
-        name: 'approval status',
-        values: {
-          Rejected: { value: 'Rejected' },
-          Approved: { value: 'Approved' },
-          Pending: { value: 'Pending' },
+export const Approver = (name) =>
+  new GraphQLObjectType({
+    name,
+    fields: () => ({
+      user: {
+        type: GraphQLID,
+        async resolve(parent) {
+          const user = await User.findById(parent.user);
+          if (!user) {
+            throw new Error('Initiator not found.');
+          }
+          return user;
         },
-      }),
-    },
-    pixel: {
-      type: new GraphQLObjectType({
-        name: 'Approvers Pixel Map',
-        fields: () => ({
-          x: { type: GraphQLInt },
-          y: { type: GraphQLInt },
+      },
+      status: {
+        type: new GraphQLEnumType({
+          name: 'ApprovalStatus',
+          values: {
+            Rejected: { value: 'Rejected' },
+            Approved: { value: 'Approved' },
+            Pending: { value: 'Pending' },
+          },
         }),
-      }),
-    },
-    scale: { type: GraphQLInt },
-    approvedAt: { type: GraphQLDateTime },
-  }),
-});
+      },
+      pixel: {
+        type: new GraphQLObjectType({
+          name: `${name}ApproversPixelMap`,
+          fields: () => ({
+            x: { type: GraphQLInt },
+            y: { type: GraphQLInt },
+          }),
+        }),
+      },
+      scale: { type: GraphQLInt },
+      approvedAt: { type: GraphQLDateTime },
+    }),
+  });
 
-export const CertificateInfo = new GraphQLObjectType({
-  name: 'Certificate Info',
-  fields: () => ({
-    template: {
-      type: new GraphQLObjectType({
-        name: 'Certificate Template',
-        fields: () => ({
-          src: { type: GraphQLString },
-          blurHash: { type: GraphQLString },
+export const CertificateInfo = (name) =>
+  new GraphQLObjectType({
+    name,
+    fields: () => ({
+      template: {
+        type: new GraphQLObjectType({
+          name: `${name}CertificateTemplate`,
+          fields: () => ({
+            src: { type: GraphQLString },
+            blurHash: { type: GraphQLString },
+          }),
         }),
-      }),
-    },
-    data: { type: GraphQLString },
-  }),
-});
+      },
+      data: { type: GraphQLString },
+    }),
+  });
 
-export const PixelMap = new GraphQLObjectType({
-  name: 'Request Pixel Map',
-  fields: () => ({
-    columnName: { type: GraphQLString },
-    pixel: {
-      type: new GraphQLObjectType({
-        name: 'Approvers Pixel Map',
-        fields: () => ({
-          x: { type: GraphQLInt },
-          y: { type: GraphQLInt },
+export const PixelMap = (name) =>
+  new GraphQLObjectType({
+    name,
+    fields: () => ({
+      columnName: { type: GraphQLString },
+      pixel: {
+        type: new GraphQLObjectType({
+          name: `${name}ApproversPixelMap`,
+          fields: () => ({
+            x: { type: GraphQLInt },
+            y: { type: GraphQLInt },
+          }),
         }),
-      }),
-    },
-    fontSize: { type: GraphQLInt },
-    fontWeight: { type: GraphQLInt },
-  }),
-});
+      },
+      fontSize: { type: GraphQLInt },
+      fontWeight: { type: GraphQLInt },
+    }),
+  });
 
 export const CreatedByDetails = {
   type: UserType,
