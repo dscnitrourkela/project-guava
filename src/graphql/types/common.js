@@ -8,7 +8,16 @@ import UserType from './UserType.js';
 export const Approver = new GraphQLObjectType({
   name: 'Request Approvers',
   fields: () => ({
-    user: { type: GraphQLID },
+    user: {
+      type: GraphQLID,
+      async resolve(parent) {
+        const user = await User.findById(parent.user);
+        if (!user) {
+          throw new Error('Initiator not found.');
+        }
+        return user;
+      },
+    },
     status: {
       type: new GraphQLEnumType({
         name: 'approval status',
@@ -67,13 +76,10 @@ export const PixelMap = new GraphQLObjectType({
   }),
 });
 
-export const UserDetails = {
+export const CreatedByDetails = {
   type: UserType,
-  args: {
-    createdById: { type: GraphQLID },
-  },
-  async resolve(parent, args) {
-    const user = await User.findById(args.createdById);
+  async resolve(parent) {
+    const user = await User.findById(parent.createdById);
     if (!user) {
       throw new Error('Initiator not found.');
     }

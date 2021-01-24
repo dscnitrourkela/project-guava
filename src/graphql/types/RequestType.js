@@ -2,21 +2,31 @@ import { GraphQLString, GraphQLObjectType, GraphQLList, GraphQLEnumType } from '
 import graphqlIsoDatefrom from 'graphql-iso-date';
 const { GraphQLDateTime } = graphqlIsoDatefrom;
 
-import { CertificateInfo, Approver, PixelMap, UserDetails } from './common.js';
+import { CertificateInfo, Approver, PixelMap, CreatedByDetails } from './common.js';
+import UserType from './UserType.js';
 
 export default new GraphQLObjectType({
   name: 'RequestType',
   description: 'Request object created by the certificate initiator for approval',
   fields: () => ({
-    initiator: UserDetails,
+    initiator: {
+      type: UserType,
+      async resolve(parent) {
+        const user = await User.findById(parent.initiator);
+        if (!user) {
+          throw new Error('Initiator not found.');
+        }
+        return user;
+      },
+    },
     title: { type: GraphQLString },
     description: { type: GraphQLString },
     approvers: { type: GraphQLList(Approver) },
     certificateInfo: { type: CertificateInfo },
     pixelMap: { type: PixelMap },
     font: { type: GraphQLString },
-    createdBy: UserDetails,
-    updatedBy: UserDetails,
+    createdBy: CreatedByDetails,
+    updatedBy: CreatedByDetails,
     createdAt: { type: GraphQLDateTime },
     updatedAt: { type: GraphQLDateTime },
     status: {

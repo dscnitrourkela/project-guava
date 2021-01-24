@@ -2,14 +2,24 @@ import { GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList } from 'graphq
 import graphqlIsoDatefrom from 'graphql-iso-date';
 const { GraphQLDateTime } = graphqlIsoDatefrom;
 
-import { PixelMap } from './common.js';
+import Request from '../../models/request.js';
+import { PixelMap, CreatedByDetails } from './common.js';
 import RequestType from './RequestType';
 
 export default new GraphQLObjectType({
   name: 'SignType',
   fields: () => ({
     _id: { type: GraphQLID },
-    request: { type: RequestType },
+    request: {
+      type: RequestType,
+      async resolve(parent) {
+        const request = await Request.findById(parent.request);
+        if (!request) {
+          throw new Error('Request not found');
+        }
+        return request;
+      },
+    },
     title: { type: GraphQLString },
     description: { type: GraphQLString },
     template: {
@@ -38,8 +48,8 @@ export default new GraphQLObjectType({
         },
       }),
     },
-    createdBy: UserDetails,
-    updatedBy: UserDetails,
+    createdBy: CreatedByDetails,
+    updatedBy: CreatedByDetails,
     createdAt: { type: GraphQLDateTime },
     updatedAt: { type: GraphQLDateTime },
   }),
