@@ -13,6 +13,7 @@ const options = {
   useUnifiedTopology: true,
   poolSize: 100,
   useFindAndModify: false,
+  useCreateIndex: true,
 };
 mongoose.connect(process.env.MONGO_APP_URI, options);
 
