@@ -5,11 +5,16 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "format": "prettier --write '**/*.js'",
-    "lint:fix": "eslint --fix '**/*.js'",
-    "lint:find": "eslint '**/*.js",
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "prettier": "npx prettier --write .",
+    "prettier:check": "npx prettier --check .",
+    "lint:fix": "npx eslint --fix '**/*.js'",
+    "lint:find": "npx eslint '**/*.js",
+    "start": "npx pm2 start ecosystem.config.cjs --only dev --no-autorestart",
+    "stop": "npx pm2 stop ecosystem.config.cjs --only dev",
+    "delete": "npx pm2 delete ecosystem.config.cjs --only dev",
+    "restart": "npx pm2 restart ecosystem.config.cjs --only dev",
+    "logs": "npx pm2 logs",
+    "status": "npx pm2 ps"
   },
   "repository": {
     "type": "git",
@@ -31,6 +36,7 @@
   "dependencies": {
     "apollo-server-express": "^2.19.2",
     "cloudinary": "^1.23.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase-admin": "^9.4.2",

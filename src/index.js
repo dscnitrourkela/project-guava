@@ -2,8 +2,6 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import cors from 'cors';
-import cookieParser from 'cookie-parser';
-// import csurf from 'csurf';
 
 // GraphQL Schema
 import schema from './graphql/index.js';
@@ -26,11 +24,9 @@ const corsOptions = {
 };
 
 // Middlewares
-// JSON and Encoded URL Body Parser, Use Cors, Use Cookie Parse, and CSURF in Express
+// JSON and Encoded URL Body Parser, Use Cors
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use(cookieParser());
-// app.use(csurf({ cookie: true }));
 
 // Initialize Apollo Server
 const apolloServer = new ApolloServer({
