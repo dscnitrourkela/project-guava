@@ -1,12 +1,11 @@
-import { GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql';
+const { GraphQLInt, GraphQLNonNull, GraphQLString } = require('graphql');
 
-// Type Defs
-import { WelcomeType } from '../types/index.js';
+const { WelcomeType } = require('../types/Welcome');
 
 // Models
-import { Welcome } from '../../models/index.js';
+const Welcome = require('../../models/welcome.js');
 
-export const addNewWelcomeMessage = {
+const addNewWelcomeMessage = {
   type: WelcomeType,
   args: {
     message: { type: new GraphQLNonNull(GraphQLString) },
@@ -32,7 +31,7 @@ export const addNewWelcomeMessage = {
   },
 };
 
-export const deleteWelcomeMessage = {
+const deleteWelcomeMessage = {
   type: WelcomeType,
   args: {
     status: { type: new GraphQLNonNull(GraphQLInt) },
@@ -51,3 +50,5 @@ export const deleteWelcomeMessage = {
     }
   },
 };
+
+module.exports = { deleteWelcomeMessage, addNewWelcomeMessage };

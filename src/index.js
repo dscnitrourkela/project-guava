@@ -1,18 +1,19 @@
 // Libraries
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
-import cors from 'cors';
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
+
+const cors = require('cors');
 
 // GraphQL Schema
-import schema from './graphql/index.js';
+const schema = require('./graphql/index.js');
 
 // Utilities
-import logger from './config/winston.js';
+const logger = require('./config/winston.js');
 
 // Initialize Firebase, Mongoose, Cloudinary Admin SDK
-import './config/mongoose.js';
-import './config/firebase.js';
-import './config/cloudinary.js';
+require('./config/mongoose.js');
+require('./config/firebase.js');
+require('./config/cloudinary.js');
 
 // Create Express app instance
 const app = express();

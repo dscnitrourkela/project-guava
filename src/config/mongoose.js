@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
 // Utilities
-import logger from './winston.js';
+const logger = require('./winston.js');
 
 // Configure dotenv as this is one of the first files to load
 dotenv.config();

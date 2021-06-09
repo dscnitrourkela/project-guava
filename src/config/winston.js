@@ -1,4 +1,4 @@
-import winston from 'winston';
+const winston = require('winston');
 
 const { createLogger, format, transports } = winston;
 const { combine, timestamp, label, printf, colorize } = format;
@@ -24,4 +24,4 @@ const logger = createLogger({
   exitOnError: false,
 });
 
-export default logger;
+module.exports = logger;

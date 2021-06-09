@@ -1,12 +1,12 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLList } from 'graphql';
+const { GraphQLInt, GraphQLNonNull, GraphQLList } = require('graphql');
 
 // Type Defs
-import { WelcomeType } from '../types/index.js';
+const WelcomeType = require('../types/Welcome.js');
 
 // Models
-import { Welcome } from '../../models/index.js';
+const Welcome = require('../../models/welcome.js');
 
-export const getWelcomeMessages = {
+const getWelcomeMessages = {
   type: new GraphQLList(WelcomeType),
   args: {},
   resolve() {
@@ -14,10 +14,12 @@ export const getWelcomeMessages = {
   },
 };
 
-export const getWelcomeMessage = {
+const getWelcomeMessage = {
   type: WelcomeType,
   args: { status: { type: new GraphQLNonNull(GraphQLInt) } },
   resolve(parent, args) {
     return Welcome.findOne({ status: args.status });
   },
 };
+
+module.exports = { getWelcomeMessage, getWelcomeMessages };

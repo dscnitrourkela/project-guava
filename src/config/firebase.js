@@ -1,9 +1,9 @@
 /* eslint-disable */
-import admin from 'firebase-admin';
-import serviceAccount from './service_account.js';
+const admin = require('firebase-admin');
+const serviceAccount = require('./service_account.js');
 
 // Utilities
-import logger from './winston.js';
+const logger = require('./winston.js');
 
 try {
   admin.initializeApp({
@@ -15,4 +15,5 @@ try {
   logger.error(new Error('Firebase Admin SDK Initialization Error'), error);
 }
 
-export const auth = admin.auth();
+const auth = admin.auth();
+module.exports = auth;
