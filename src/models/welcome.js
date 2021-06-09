@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+const { Schema, model } = require('mongoose');
 
 const welcomeSchema = new Schema({
   message: {
@@ -14,4 +13,4 @@ const welcomeSchema = new Schema({
   },
 });
 
-export default model('welcome', welcomeSchema);
+module.exports = model('welcome', welcomeSchema);

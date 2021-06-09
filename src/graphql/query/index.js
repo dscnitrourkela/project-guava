@@ -1,17 +1,14 @@
-import { GraphQLObjectType } from 'graphql';
+const { GraphQLObjectType } = require('graphql');
 
 // Import Queries
-import { getWelcomeMessage, getWelcomeMessages } from './Welcome.js';
-import { getUserByID, getUserByMailID } from './user.js';
+const { getWelcomeMessage, getWelcomeMessages } = require('./Welcome.js');
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: () => ({
     getWelcomeMessage,
     getWelcomeMessages,
-    getUserByID,
-    getUserByMailID,
   }),
 });
 
-export default RootQuery;
+module.exports = RootQuery;

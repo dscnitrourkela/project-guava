@@ -1,9 +1,11 @@
-import { GraphQLString, GraphQLInt, GraphQLObjectType } from 'graphql';
+const { GraphQLString, GraphQLInt, GraphQLObjectType } = require('graphql');
 
-export default new GraphQLObjectType({
+const WelcomeType = new GraphQLObjectType({
   name: 'Welcome',
   fields: () => ({
     status: { type: GraphQLInt },
     message: { type: GraphQLString },
   }),
 });
+
+module.exports = WelcomeType;
