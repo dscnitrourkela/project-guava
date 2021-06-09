@@ -9,9 +9,7 @@
     "lint:fix": "eslint --fix '**/*.js'",
     "lint:find": "eslint '**/*.js",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "test": "jest --coverage --forceExit",
-    "test:watch": "jest --watch --coverage --detectOpenHandles"
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
