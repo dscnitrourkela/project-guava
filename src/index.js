@@ -42,6 +42,7 @@ apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
 
 // Start Express Server on defined port
 const PORT = process.env.PORT || 8000;
+
 app.listen(PORT, (error) => {
   if (error) {
     logger(new Error(`Apollo-Express Server Error on Port ${PORT}`), error);
