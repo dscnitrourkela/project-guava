@@ -21,7 +21,7 @@ const app = express();
 // Setup Cross-Origin Resource Sharing for the development environment
 // localhost:3000 would be the frontend port on which the app is running
 const corsOptions = {
-  origin: process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : 'https://certificate.dscnitrourkela.org',
+  origin: process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : 'https://signit.dscnitrourkela.org',
 };
 
 // Middlewares

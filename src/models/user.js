@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema(
   {
@@ -16,38 +15,20 @@ const userSchema = new Schema(
       trim: true,
     },
     displayPicture: {
-      src: {
-        type: String,
-        required: false,
-        // We can have a default image
-      },
-      blurHash: {
-        type: String,
-        required: false,
-        // We can have a default image
-      },
-    },
-    firebaseID: {
       type: String,
-      required: false, // TODO: Change to true later
+      required: false,
     },
-    accessLevel: [
-      {
-        type: String,
-        required: false, // TODO: Change to true later
-      },
-    ],
-    requests: [Schema.ObjectId],
-    signs: [Schema.ObjectId],
+    authProviderID: {
+      type: String,
+      required: true, // TODO: Change to true later
+    },
     createdBy: {
       type: Schema.ObjectId,
       required: false, // TODO: Change to true later
-      trim: true,
     },
     updatedBy: {
       type: Schema.ObjectId,
       required: false, // TODO: Change to true later
-      trim: true,
     },
     schemaVersion: {
       type: Number,
@@ -69,4 +50,4 @@ userSchema
   )
   .index({ unique: true });
 
-export default model('user', userSchema);
+module.exports = model('user', userSchema);

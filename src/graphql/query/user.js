@@ -1,27 +1,26 @@
-import { GraphQLNonNull, GraphQLID, GraphQLString } from 'graphql';
+import { GraphQLError, GraphQLID, GraphQLString } from 'graphql';
 
 // Type Defs
-import { UserType } from '../types/index.js';
+const UserType = require('../types/user');
 
 // Models
-import { User } from '../../models/index.js';
+const UserModel = require('../../models/user');
 
-export const getUserByID = {
+const getUser = {
   type: UserType,
   args: {
-    id: { type: GraphQLNonNull(GraphQLID) },
+    id: { type: GraphQLID },
+    mail: { type: GraphQLString },
   },
-  resolve(parent, args) {
-    return User.findById(args.id);
+  resolve(_, args) {
+    if (!args.id && !args.mail) {
+      return new GraphQLError('Missing fields');
+    }
+    if (args.id) {
+      return UserModel.findById(args.id);
+    }
+    return UserModel.findOne({ mail: args.mail });
   },
 };
 
-export const getUserByMailID = {
-  type: UserType,
-  args: {
-    mail: { type: GraphQLNonNull(GraphQLString) },
-  },
-  resolve(parent, args) {
-    return Welcome.findOne({ mail: args.mail });
-  },
-};
+module.exports = { getUser };
