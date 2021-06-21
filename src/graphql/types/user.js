@@ -1,6 +1,6 @@
 const { GraphQLString, GraphQLObjectType, GraphQLID } = require('graphql');
 
-const UserType = GraphQLObjectType({
+const UserType = new GraphQLObjectType({
   name: 'UserType',
   fields: () => ({
     id: { type: GraphQLID },

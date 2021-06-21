@@ -1,5 +1,3 @@
-import User from '../../models/user.js';
-
 import logger from '../../config/winston.js';
 
 export default async (parent, args) => {

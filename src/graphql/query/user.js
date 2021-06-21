@@ -1,5 +1,4 @@
-import { GraphQLError, GraphQLID, GraphQLString } from 'graphql';
-
+const { GraphQLError, GraphQLID, GraphQLString } = require('graphql');
 // Type Defs
 const UserType = require('../types/user');
 

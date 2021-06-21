@@ -1,15 +1,14 @@
 /* eslint-disable */
-import { GraphQLObjectType } from 'graphql';
+const { GraphQLObjectType } = require('graphql');
 
 // Mutations
-const { addNewWelcomeMessage, deleteWelcomeMessage } = require('./welcome.js');
+const { createUser } = require('./user.js');
 
-const Mutation = new GraphQLObjectType({
+const mutation = new GraphQLObjectType({
   name: 'mutation',
   fields: () => ({
-    addNewWelcomeMessage,
-    deleteWelcomeMessage,
+    createUser,
   }),
 });
 
-module.exports = Mutation;
+module.exports = mutation;
