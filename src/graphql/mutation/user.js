@@ -5,6 +5,8 @@ const UserType = require('../types/user');
 
 const User = require('../../models/user');
 
+const { addCreatedAndUpdatedBy, addUpdatedBy } = require('../../utils/index');
+
 const createUser = {
   type: UserType,
   args: {
@@ -19,6 +21,7 @@ const createUser = {
       name,
       displayPicture,
       authProviderID,
+      ...addCreatedAndUpdatedBy(null),
     });
     return user.save();
   },
