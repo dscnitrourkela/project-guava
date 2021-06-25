@@ -1,34 +1,30 @@
-import { GraphQLString, GraphQLNonNull, GraphQLID, GraphQLList } from 'graphql';
+const { GraphQLString, GraphQLNonNull, GraphQLID } = require('graphql');
 
 // Type Defs
-import { UserType } from '../types/index.js';
+const UserType = require('../types/user');
 
-// Resolvers
-import { addUser, updateUser as updateExistingUser } from '../resolver/index.js';
+const User = require('../../models/user');
 
-export const createUser = {
+const { addCreatedAndUpdatedBy, addUpdatedBy } = require('../../utils/index');
+
+const createUser = {
   type: UserType,
   args: {
     mail: { type: GraphQLNonNull(GraphQLString) },
     name: { type: GraphQLNonNull(GraphQLString) },
     displayPicture: { type: GraphQLNonNull(GraphQLString) },
-    blurHash: { type: GraphQLNonNull(GraphQLString) },
-    firebaseID: { type: GraphQLNonNull(GraphQLID) },
-    accessLevel: { type: GraphQLList(GraphQLString) },
+    authProviderID: { type: GraphQLNonNull(GraphQLID) },
   },
-  resolve(parent, args) {
-    addUser(parent, args);
+  resolve(_, { mail, name, displayPicture, authProviderID }) {
+    const user = new User({
+      mail,
+      name,
+      displayPicture,
+      authProviderID,
+      ...addCreatedAndUpdatedBy(null),
+    });
+    return user.save();
   },
 };
 
-export const updateUser = {
-  type: UserType,
-  args: {
-    name: { type: GraphQLString },
-    displayPicture: { type: GraphQLString },
-    blurHash: { type: GraphQLString },
-  },
-  resolve(parent, args) {
-    updateExistingUser(parent, args);
-  },
-};
+module.exports = { createUser };

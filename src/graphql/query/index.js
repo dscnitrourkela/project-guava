@@ -1,13 +1,12 @@
 const { GraphQLObjectType } = require('graphql');
 
 // Import Queries
-const { getWelcomeMessage, getWelcomeMessages } = require('./welcome.js');
+const { getUser } = require('./user');
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: () => ({
-    getWelcomeMessage,
-    getWelcomeMessages,
+    getUser,
   }),
 });
 
