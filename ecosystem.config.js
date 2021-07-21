@@ -14,7 +14,7 @@ module.exports = {
       },
       exec_mode: 'cluster',
       instances: 1,
-      exp_backoff_restart_delay: 100,
+      exp_backoff_restart_delay: 15000,
     },
   ],
 };
