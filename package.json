@@ -8,13 +8,13 @@
     "prettier:check": "npx prettier --check .",
     "lint:fix": "npx eslint --fix '**/*.js'",
     "lint:find": "npx eslint '**/*.js",
-    "start": "npx pm2 start ecosystem.config.js --only dev",
-    "watch": "yarn start && npx pm2 flush && yarn logs",
-    "stop": "npx pm2 stop ecosystem.config.js --only dev",
-    "delete": "npx pm2 delete ecosystem.config.js --only dev",
-    "restart": "npx pm2 restart ecosystem.config.js --only dev",
-    "logs": "npx pm2 logs",
-    "status": "npx pm2 ps"
+    "start": "pm2 start ecosystem.config.js --only dev",
+    "watch": "yarn start && pm2 flush && yarn logs",
+    "stop": "pm2 stop ecosystem.config.js --only dev",
+    "delete": "pm2 delete ecosystem.config.js --only dev",
+    "restart": "pm2 restart ecosystem.config.js --only dev",
+    "logs": "pm2 logs",
+    "status": "pm2 ps"
   },
   "repository": {
     "type": "git",
