@@ -11,14 +11,14 @@ const getUser = {
     id: { type: GraphQLID },
     mail: { type: GraphQLString },
   },
-  resolve(_, args) {
-    if (!args.id && !args.mail) {
-      return new GraphQLError('Missing fields');
+  resolve(_, { id, mail }) {
+    if (id) {
+      return UserModel.findById(id);
     }
-    if (args.id) {
-      return UserModel.findById(args.id);
+    if (mail) {
+      return UserModel.findOne({ mail });
     }
-    return UserModel.findOne({ mail: args.mail });
+    return new GraphQLError('Missing fields');
   },
 };
 
