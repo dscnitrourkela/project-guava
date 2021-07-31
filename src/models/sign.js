@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+const { Schema, model } = require('mongoose');
 
 const signSchema = new Schema(
   {
@@ -41,4 +40,4 @@ const signSchema = new Schema(
   { timestamps: true }
 );
 
-export default model('sign', signSchema);
+module.exports = model('sign', signSchema);
