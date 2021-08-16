@@ -6,7 +6,7 @@ const SignType = require('../types/sign');
 const UserModel = require('../../models/user');
 const SignModel = require('../../models/sign');
 
-const { addCreatedAndUpdatedBy, addUpdatedBy } = require('../../utils/index');
+const { addCreatedAndUpdatedBy } = require('../../utils/index');
 const { GraphQLError } = require('graphql');
 
 const createSign = {
