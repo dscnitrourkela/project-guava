@@ -10,11 +10,6 @@ try {
     secure: true,
   });
   logger.info('Cloudinary SDK Initialized');
-
-  cloudinary.uploader.upload('my_image.jpg', (error, result) => {
-    // eslint-disable-next-line no-console
-    console.log(result, error);
-  });
 } catch (error) {
   logger.error(new Error('Cloudinary SDK Initialization Error: '), error);
 }
