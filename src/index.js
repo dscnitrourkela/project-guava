@@ -29,16 +29,20 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
-// Initialize Apollo Server
-const apolloServer = new ApolloServer({
-  schema,
-  cors: corsOptions,
-  playground: process.env.NODE_ENV !== 'production',
-  debug: process.env.NODE_ENV !== 'production',
-});
+async function startServer() {
+  // Initialize Apollo Server
+  const apolloServer = new ApolloServer({
+    schema,
+    cors: corsOptions,
+    playground: process.env.NODE_ENV !== 'production',
+    debug: process.env.NODE_ENV !== 'production',
+  });
+  await apolloServer.start();
+  apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
+}
+startServer();
 
 // Attach Express Server with Apollo Server
-apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
 
 // Start Express Server on defined port
 const PORT = process.env.PORT || 8000;

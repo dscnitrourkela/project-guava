@@ -13,10 +13,13 @@ const getSign = {
   },
   async resolve(_, { signId, userId }) {
     if (signId) {
-      return [SignModel.findById(signId)];
+      return [SignModel.findById(signId).exec()];
     }
     if (userId) {
-      return (await UserModel.findById(userId).select('signs').populate({ path: 'signs', model: 'sign' }))?.signs || [];
+      return (
+        (await UserModel.findById(userId).select('signs').populate({ path: 'signs', model: 'sign' }).exec())?.signs ||
+        []
+      );
     }
     return new GraphQLError('signId or userId is required');
   },
