@@ -20,7 +20,7 @@ const createSign = {
   },
   async resolve(_, { userID, userMail, name, image, designation }) {
     if (userID) {
-      const ifUserExists = await UserModel.exists({ _id: userID });
+      const ifUserExists = await UserModel.exists({ _id: userID }).exec();
       if (ifUserExists) {
         const sign = new SignModel({ userID, userMail, name, image, designation, ...addCreatedAndUpdatedBy(null) });
         return sign.save();

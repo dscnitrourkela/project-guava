@@ -13,7 +13,7 @@ const UserType = new GraphQLObjectType({
     signs: {
       type: new GraphQLList(SignType),
       resolve(parent) {
-        return SignModel.find({ _id: parent.signs });
+        return SignModel.find({ _id: parent.signs }).exec();
       },
     },
   }),

@@ -13,10 +13,10 @@ const getUser = {
   },
   resolve(_, { id, mail }) {
     if (id) {
-      return UserModel.findById(id);
+      return UserModel.findById(id).exec();
     }
     if (mail) {
-      return UserModel.findOne({ mail });
+      return UserModel.findOne({ mail }).exec();
     }
     return new GraphQLError('Missing fields');
   },
