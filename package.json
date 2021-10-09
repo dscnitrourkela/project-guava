@@ -4,10 +4,10 @@
   "description": "The project repository for an open system to generate and manage certificates.",
   "main": "index.js",
   "scripts": {
-    "prettier": "npx prettier --write .",
+    "prettier:fix": "npx prettier --write .",
     "prettier:check": "npx prettier --check .",
-    "lint:fix": "npx eslint --fix '**/*.js'",
-    "lint:find": "npx eslint '**/*.js",
+    "lint:fix": "npx eslint --fix ./src",
+    "lint:check": "npx eslint ./src",
     "start": "pm2 start ecosystem.config.js --only dev",
     "watch": "yarn start && pm2 flush && yarn logs",
     "stop": "pm2 stop ecosystem.config.js --only dev",
@@ -52,7 +52,6 @@
     "jest": "^27.2.5",
     "jest-cli": "^27.2.5",
     "jest-extended": "^0.11.5",
-    "pm2": "^5.1.2",
-    "prettier": "^2.4.1"
+    "pm2": "^5.1.2"
   }
 }
