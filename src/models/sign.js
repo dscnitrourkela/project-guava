@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+const { Schema, model } = require('mongoose');
+
+const UserModel = require('./user');
 
 const signSchema = new Schema(
   {
@@ -41,4 +42,8 @@ const signSchema = new Schema(
   { timestamps: true }
 );
 
-export default model('sign', signSchema);
+signSchema.post('save', async (sign) => {
+  await UserModel.findOneAndUpdate({ _id: sign.userID }, { $push: { signs: sign._id } }, { new: true });
+});
+
+module.exports = model('sign', signSchema);

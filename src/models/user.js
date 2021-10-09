@@ -22,6 +22,11 @@ const userSchema = new Schema(
       type: String,
       required: true, // TODO: Change to true later
     },
+    signs: [
+      {
+        type: Schema.ObjectId,
+      },
+    ],
     createdBy: {
       type: Schema.ObjectId,
       required: false, // TODO: Change to true later
