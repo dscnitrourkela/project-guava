@@ -20,8 +20,21 @@ const app = express();
 
 // Setup Cross-Origin Resource Sharing for the development environment
 // localhost:3000 would be the frontend port on which the app is running
+const whitelist = {
+  prod: ['https://signit.dscnitrourkela.org', 'https://studio.apollographql.com'],
+  dev: ['http://localhost:3000', 'https://studio.apollographql.com', 'http://localhost:8000'],
+};
 const corsOptions = {
-  origin: process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : 'https://signit.dscnitrourkela.org',
+  origin: (origin, callback) => {
+    const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+    if (!origin && env === 'dev') {
+      callback(null, true);
+    } else if (whitelist[env].indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
 };
 
 // Middlewares
