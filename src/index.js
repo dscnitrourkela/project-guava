@@ -5,10 +5,10 @@ const { ApolloServer } = require('apollo-server-express');
 const cors = require('cors');
 
 // GraphQL Schema
-const schema = require('./graphql/index.js');
+const schema = require('./graphql/index.js')
 
 // Utilities
-const logger = require('./config/winston.js');
+const logger = require('./config/winston.js')
 
 // Initialize Firebase, Mongoose, Cloudinary Admin SDK
 require('./config/mongoose.js');
@@ -16,13 +16,17 @@ require('./config/firebase.js');
 require('./config/cloudinary.js');
 
 // Create Express app instance
-const app = express();
+const app=express();
 
 // Setup Cross-Origin Resource Sharing for the development environment
 // localhost:3000 would be the frontend port on which the app is running
 const whitelist = {
-  prod: ['https://signit.dscnitrourkela.org', 'https://studio.apollographql.com'],
-  dev: ['http://localhost:3000', 'https://studio.apollographql.com', 'http://localhost:8000'],
+  prod: ['https://signit.dscnitrourkela.org', 
+         'https://studio.apollographql.com'
+        ],
+  dev: ['http://localhost:3000', 
+        'https://studio.apollographql.com', 
+        'http://localhost:8000'],
 };
 const corsOptions = {
   origin: (origin, callback) => {
