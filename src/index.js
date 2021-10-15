@@ -12,7 +12,7 @@ const logger = require('./config/winston.js');
 
 // Initialize Firebase, Mongoose, Cloudinary Admin SDK
 require('./config/mongoose.js');
-require('./config/firebase.js');
+// require('./config/firebase.js');
 require('./config/cloudinary.js');
 
 // Create Express app instance
