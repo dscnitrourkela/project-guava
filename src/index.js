@@ -27,7 +27,7 @@ const whitelist = {
 const corsOptions = {
   origin: (origin, callback) => {
     const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-    if (!origin && env === 'dev') {
+    if (!origin) {
       callback(null, true);
     } else if (whitelist[env].indexOf(origin) !== -1) {
       callback(null, true);
