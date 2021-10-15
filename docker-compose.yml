@@ -1,0 +1,7 @@
+# @format
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - '8085:8085'
