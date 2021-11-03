@@ -57,6 +57,10 @@ const requestSchema = new Schema(
       template: {
         src: { type: String, required: true },
         blurHash: { type: String, required: true },
+        dimensions: {
+          x: { type: Number, required: true },
+          y: { type: Number, required: true },
+        },
       },
       data: {
         type: String,
