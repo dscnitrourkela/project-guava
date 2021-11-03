@@ -7,6 +7,10 @@ const certificateSchema = new Schema(
       type: Schema.ObjectId,
       required: true,
     },
+    availabilityDate: {
+      type: Date,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -26,6 +30,10 @@ const certificateSchema = new Schema(
     template: {
       src: { type: String, required: true },
       blurHash: { type: String, required: true },
+      dimensions: {
+        x: { type: Number, required: true },
+        y: { type: Number, required: true },
+      },
     },
     font: {
       type: String,
@@ -54,6 +62,12 @@ const certificateSchema = new Schema(
           type: Number,
           required: true,
           default: 500,
+        },
+        fontColour: {
+          type: String,
+          required: true,
+          default: '#000000',
+          trim: true,
         },
       },
     ],
