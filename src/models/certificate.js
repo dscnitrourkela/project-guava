@@ -6,6 +6,7 @@ const certificateSchema = new Schema(
     request: {
       type: Schema.ObjectId,
       required: true,
+      index: true,
     },
     availabilityDate: {
       type: Date,
@@ -45,6 +46,7 @@ const certificateSchema = new Schema(
       required: true,
       trim: true,
       lowercase: true,
+      index: true,
     },
     pixelMap: [
       {
@@ -116,5 +118,6 @@ certificateSchema
       ),
     'Invalid Email Address'
   );
+certificateSchema.index({ request: 1, mail: 1 }, { unique: true });
 
 export default model('certificate', certificateSchema);
