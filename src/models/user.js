@@ -7,6 +7,7 @@ const userSchema = new Schema(
       required: true,
       trim: true,
       unique: true,
+      index: true,
       lowercase: true,
     },
     name: {
@@ -20,7 +21,9 @@ const userSchema = new Schema(
     },
     authProviderID: {
       type: String,
-      required: true, // TODO: Change to true later
+      required: true,
+      unique: true,
+      index: true,
     },
     signs: [
       {
@@ -52,7 +55,6 @@ userSchema
         mail
       ),
     'Invalid Email Address'
-  )
-  .index({ unique: true });
+  );
 
 module.exports = model('user', userSchema);

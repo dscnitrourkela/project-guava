@@ -1,3 +1,4 @@
+//TODO: Check if pm2-runtme works
 // Libraries
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
@@ -65,5 +66,5 @@ app.listen(PORT, (error) => {
     logger(new Error(`Apollo-Express Server Error on Port ${PORT}`), error);
   }
 
-  logger.info(`Apollo-Express Server Started on Port ${PORT}`);
+  logger.info(`Apollo-Express Server Started on Port ${PORT} with ENV as ${process.env.NODE_ENV}`);
 });

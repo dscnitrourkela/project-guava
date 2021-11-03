@@ -7,6 +7,8 @@ const signSchema = new Schema(
     userID: {
       type: Schema.ObjectId,
       required: true,
+      unique: true,
+      index: true,
     },
     name: {
       type: String,
