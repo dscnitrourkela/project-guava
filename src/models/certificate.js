@@ -63,6 +63,12 @@ const certificateSchema = new Schema(
           required: true,
           default: 500,
         },
+        fontColour: {
+          type: String,
+          required: true,
+          default: '#000000',
+          trim: true,
+        },
       },
     ],
     signMap: [

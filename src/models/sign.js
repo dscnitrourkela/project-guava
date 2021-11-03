@@ -28,6 +28,12 @@ const signSchema = new Schema(
       required: true,
       default: true,
     },
+    colour: {
+      type: String,
+      required: true,
+      default: '#000000',
+      trim: true,
+    },
     createdBy: {
       type: Schema.ObjectId,
       required: false, // TODO: change to true later
