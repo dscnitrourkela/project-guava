@@ -23,6 +23,11 @@ const signSchema = new Schema(
       required: true,
       trim: true,
     },
+    isActive: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
     createdBy: {
       type: Schema.ObjectId,
       required: false, // TODO: change to true later
