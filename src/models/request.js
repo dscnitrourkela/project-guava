@@ -7,6 +7,10 @@ const requestSchema = new Schema(
       type: Schema.ObjectId,
       required: true,
     },
+    availabilityDate: {
+      type: Date,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
