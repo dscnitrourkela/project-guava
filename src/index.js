@@ -83,6 +83,9 @@ async function startServer() {
             }
           }
         );
+      }).catch((err) => {
+        logger.error(err);
+        return null;
       });
       return { decodedToken };
     },
