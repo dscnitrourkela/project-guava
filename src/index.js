@@ -1,6 +1,8 @@
 //TODO: Check if pm2-runtme works
 // Libraries
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
 const { ApolloServer } = require('apollo-server-express');
 
 const cors = require('cors');
@@ -18,6 +20,17 @@ require('./config/cloudinary.js');
 
 // Create Express app instance
 const app = express();
+
+const authClient = jwksClient({
+  jwksUri: 'https://signit.eu.auth0.com/.well-known/jwks.json',
+});
+
+const getKey = (header, callback) => {
+  authClient.getSigningKey(header.kid, (err, key) => {
+    const signingKey = key.getPublicKey();
+    callback(null, signingKey);
+  });
+};
 
 // Setup Cross-Origin Resource Sharing for the development environment
 // localhost:3000 would be the frontend port on which the app is running
@@ -50,6 +63,29 @@ async function startServer() {
     cors: corsOptions,
     playground: process.env.NODE_ENV !== 'production',
     debug: process.env.NODE_ENV !== 'production',
+    context: async ({ req }) => {
+      const authHeader = req.headers.authorization;
+      const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
+      const decodedToken = await new Promise((resolve, reject) => {
+        jwt.verify(
+          token,
+          getKey,
+          {
+            algorithms: ['RS256'],
+            audience: ['https://signit.eu.auth0.com/userinfo'],
+            issuer: 'https://signit.eu.auth0.com/',
+          },
+          (err, decoded) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(decoded);
+            }
+          }
+        );
+      });
+      return { decodedToken };
+    },
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
