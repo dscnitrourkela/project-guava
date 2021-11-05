@@ -1,7 +1,10 @@
 //TODO: Check if pm2-runtme works
 // Libraries
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
 const { ApolloServer } = require('apollo-server-express');
+const fetch = require('node-fetch');
 
 const cors = require('cors');
 
@@ -18,6 +21,19 @@ require('./config/cloudinary.js');
 
 // Create Express app instance
 const app = express();
+
+const AUTH0_DOMAIN = 'signit.eu.auth0.com';
+
+const authClient = jwksClient({
+  jwksUri: `https://${AUTH0_DOMAIN}/.well-known/jwks.json`,
+});
+
+const getKey = (header, callback) => {
+  authClient.getSigningKey(header.kid, (err, key) => {
+    const signingKey = key.getPublicKey();
+    callback(null, signingKey);
+  });
+};
 
 // Setup Cross-Origin Resource Sharing for the development environment
 // localhost:3000 would be the frontend port on which the app is running
@@ -50,6 +66,46 @@ async function startServer() {
     cors: corsOptions,
     playground: process.env.NODE_ENV !== 'production',
     debug: process.env.NODE_ENV !== 'production',
+    context: async ({ req }) => {
+      const authHeader = req.headers.authorization;
+      const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : null;
+      const decodedToken = await new Promise((resolve, reject) => {
+        jwt.verify(
+          token,
+          getKey,
+          {
+            algorithms: ['RS256'],
+            audience: [`https://${AUTH0_DOMAIN}/userinfo`],
+            issuer: `https://${AUTH0_DOMAIN}/`,
+          },
+          (err, decoded) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(decoded);
+            }
+          }
+        );
+      }).catch((err) => {
+        logger.error(err);
+        return null;
+      });
+      if (!decodedToken) {
+        return { decodedToken };
+      }
+      const userDetailsByIdUrl = `https://${AUTH0_DOMAIN}/api/v2/users/${decodedToken.sub}`;
+      const userDetails = await fetch(userDetailsByIdUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .catch(() => null);
+
+      return {
+        decodedToken: { email: userDetails?.email, email_verified: userDetails?.email_verified, ...decodedToken },
+      };
+    },
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: '/', cors: corsOptions });
