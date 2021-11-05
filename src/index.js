@@ -4,6 +4,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 const { ApolloServer } = require('apollo-server-express');
+const fetch = require('node-fetch');
 
 const cors = require('cors');
 
@@ -21,8 +22,10 @@ require('./config/cloudinary.js');
 // Create Express app instance
 const app = express();
 
+const AUTH0_DOMAIN = 'signit.eu.auth0.com';
+
 const authClient = jwksClient({
-  jwksUri: 'https://signit.eu.auth0.com/.well-known/jwks.json',
+  jwksUri: `https://${AUTH0_DOMAIN}/.well-known/jwks.json`,
 });
 
 const getKey = (header, callback) => {
@@ -65,15 +68,15 @@ async function startServer() {
     debug: process.env.NODE_ENV !== 'production',
     context: async ({ req }) => {
       const authHeader = req.headers.authorization;
-      const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
+      const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : null;
       const decodedToken = await new Promise((resolve, reject) => {
         jwt.verify(
           token,
           getKey,
           {
             algorithms: ['RS256'],
-            audience: ['https://signit.eu.auth0.com/userinfo'],
-            issuer: 'https://signit.eu.auth0.com/',
+            audience: [`https://${AUTH0_DOMAIN}/userinfo`],
+            issuer: `https://${AUTH0_DOMAIN}/`,
           },
           (err, decoded) => {
             if (err) {
@@ -87,7 +90,21 @@ async function startServer() {
         logger.error(err);
         return null;
       });
-      return { decodedToken };
+      if (!decodedToken) {
+        return { decodedToken };
+      }
+      const userDetailsByIdUrl = `https://${AUTH0_DOMAIN}/api/v2/users/${decodedToken.sub}`;
+      const userDetails = await fetch(userDetailsByIdUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .catch(() => null);
+
+      return {
+        decodedToken: { email: userDetails?.email, email_verified: userDetails?.email_verified, ...decodedToken },
+      };
     },
   });
   await apolloServer.start();
