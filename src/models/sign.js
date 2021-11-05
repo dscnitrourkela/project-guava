@@ -37,14 +37,14 @@ const signSchema = new Schema(
       trim: true,
     },
     createdBy: {
-      type: Schema.ObjectId,
-      required: false, // TODO: change to true later
-      trim: true,
+      type: String,
+      required: true,
+      default: 'system',
     },
     updatedBy: {
-      type: Schema.ObjectId,
-      required: false, // TODO: change to true later
-      trim: true,
+      type: String,
+      required: true,
+      default: 'system',
     },
     schemaVersion: {
       type: Number,
