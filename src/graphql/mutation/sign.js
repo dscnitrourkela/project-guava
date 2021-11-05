@@ -6,7 +6,6 @@ const SignType = require('../types/sign');
 const UserModel = require('../../models/user');
 const SignModel = require('../../models/sign');
 
-const { addCreatedAndUpdatedBy } = require('../../utils/index');
 const { GraphQLError } = require('graphql');
 
 const createSign = {
@@ -18,11 +17,11 @@ const createSign = {
     image: { type: GraphQLNonNull(GraphQLString) },
     designation: { type: GraphQLNonNull(GraphQLString) },
   },
-  async resolve(_, { userID, userMail, name, image, designation }) {
+  async resolve(_, { userID, userMail, name, image, designation }, { addCreatedAndUpdatedByWithUser }) {
     if (userID) {
       const ifUserExists = await UserModel.exists({ _id: userID }).exec();
       if (ifUserExists) {
-        const sign = new SignModel({ userID, userMail, name, image, designation, ...addCreatedAndUpdatedBy(null) });
+        const sign = new SignModel({ userID, userMail, name, image, designation, ...addCreatedAndUpdatedByWithUser() });
         return sign.save();
       }
       return new GraphQLError('User Not in Database');
@@ -30,7 +29,7 @@ const createSign = {
     if (userMail) {
       const userID = await UserModel.findOne({ mail: userMail }, '_id').exec();
       if (userID) {
-        const sign = new SignModel({ userID, userMail, name, image, designation, ...addCreatedAndUpdatedBy(null) });
+        const sign = new SignModel({ userID, userMail, name, image, designation, ...addCreatedAndUpdatedByWithUser() });
         return sign.save();
       }
       return new GraphQLError('User Not in Database');
