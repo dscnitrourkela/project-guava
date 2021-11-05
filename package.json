@@ -46,6 +46,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.0.5",
     "mongoose": "^6.0.10",
+    "node-fetch": "2.6.6",
     "winston": "^3.3.3"
   },
   "devDependencies": {
