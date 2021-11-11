@@ -1,4 +1,4 @@
-// NOTE: The following is kept in automatic sync with Auth0's Actions.
+// NOTE: The following is not kept in automatic sync with Auth0's Actions.
 // There is manual sync as at the moment there to CI/CD for Auth0 Actions from Version Control that is known to us.
 // Language: javascript
 // Context Required: Auth0 Actions Runtime
