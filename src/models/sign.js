@@ -1,14 +1,10 @@
 const { Schema, model } = require('mongoose');
 
-const UserModel = require('./user');
-
 const signSchema = new Schema(
   {
     userID: {
       type: Schema.ObjectId,
       required: true,
-      unique: true,
-      index: true,
     },
     name: {
       type: String,
@@ -54,9 +50,5 @@ const signSchema = new Schema(
   },
   { timestamps: true }
 );
-
-signSchema.post('save', async (sign) => {
-  await UserModel.findOneAndUpdate({ _id: sign.userID }, { $push: { signs: sign._id } }, { new: true });
-});
 
 module.exports = model('sign', signSchema);

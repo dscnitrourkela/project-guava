@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 const fetch = require('node-fetch');
-const logger = require('../config/winston.js');
 
 const AUTH0_DOMAIN = 'signit.eu.auth0.com';
 
@@ -45,10 +44,7 @@ const decodeTokenFromHeader = async (authHeader) => {
         }
       }
     );
-  }).catch((err) => {
-    logger.error(err);
-    return null;
-  });
+  }).catch(() => null);
   if (!decodedToken) {
     return { decodedToken };
   }
