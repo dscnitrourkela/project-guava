@@ -1,11 +1,12 @@
 const { GraphQLString, GraphQLNonNull, GraphQLError } = require('graphql');
 
 // Type Defs
-const UserType = require('../types/user');
+const { UserType } = require('../types');
 
 const User = require('../../models/user');
 
 const createUser = {
+  name: 'createUser',
   type: UserType,
   args: {
     name: { type: GraphQLNonNull(GraphQLString) },

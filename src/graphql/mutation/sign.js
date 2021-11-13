@@ -2,7 +2,7 @@ const { GraphQLString, GraphQLNonNull } = require('graphql');
 const mongoose = require('mongoose');
 
 // Type Defs
-const SignType = require('../types/sign');
+const { SignType } = require('../types/');
 
 const UserModel = require('../../models/user');
 const SignModel = require('../../models/sign');
@@ -10,6 +10,7 @@ const SignModel = require('../../models/sign');
 const { GraphQLError } = require('graphql');
 
 const createSign = {
+  name: 'createSign',
   type: SignType,
   args: {
     name: { type: GraphQLNonNull(GraphQLString) },

@@ -1,11 +1,12 @@
 const { GraphQLError, GraphQLID, GraphQLString } = require('graphql');
 // Type Defs
-const UserType = require('../types/user');
+const { UserType } = require('../types/');
 
 // Models
 const UserModel = require('../../models/user');
 
 const getUser = {
+  name: 'getUser',
   type: UserType,
   args: {
     id: { type: GraphQLID },
