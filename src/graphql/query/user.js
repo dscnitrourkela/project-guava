@@ -17,7 +17,7 @@ const getUser = {
       return UserModel.findById(id).exec();
     }
     if (mail) {
-      return UserModel.findOne({ mail }).exec();
+      return UserModel.findOne({ mail }).setOptions({ sanitizeFilter: true }).exec();
     }
     return new GraphQLError('Missing fields');
   },

@@ -18,11 +18,11 @@ const createSign = {
     designation: { type: GraphQLNonNull(GraphQLString) },
   },
   async resolve(_, { name, image, designation }, { decodedToken, addCreatedAndUpdatedByWithUser }) {
-    if (!decodedToken) {
+    if (!decodedToken || !decodedToken.sub) {
       return new GraphQLError('Missing fields in the Auth Token');
     }
     const { sub } = decodedToken;
-    const userFromDB = await UserModel.findOne({ authProviderID: sub }).exec();
+    const userFromDB = await UserModel.findOne({ authProviderID: sub }).setOptions({ sanitizeFilter: true }).exec();
     if (!userFromDB._id) {
       return new GraphQLError('User Not in Database');
     }

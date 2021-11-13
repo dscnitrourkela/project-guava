@@ -12,7 +12,7 @@ const UserType = new GraphQLObjectType({
     authProviderID: { type: GraphQLString },
     signs: {
       type: new GraphQLList(SignFlatType),
-      resolve: (parent) => SignModel.find({ _id: parent.signs }).exec(),
+      resolve: (parent) => SignModel.find({ _id: parent.signs }).setOptions({ sanitizeFilter: true }).exec(),
     },
   }),
 });

@@ -13,7 +13,7 @@ const createUser = {
     displayPicture: { type: GraphQLNonNull(GraphQLString) },
   },
   resolve(_, { name, displayPicture }, { decodedToken, addCreatedAndUpdatedByWithUser }) {
-    if (!decodedToken) {
+    if (!decodedToken || !decodedToken.email || !decodedToken.sub) {
       return new GraphQLError('Missing fields in the Auth Token');
     }
     const { email: mail, sub: authProviderID } = decodedToken;
