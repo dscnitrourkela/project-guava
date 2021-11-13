@@ -12,7 +12,11 @@ const getUser = {
     id: { type: GraphQLID },
     mail: { type: GraphQLString },
   },
-  resolve(_, { id, mail }) {
+  resolve(_, { id, mail }, { decodedToken }) {
+    const { sub } = decodedToken || {};
+    if (sub) {
+      return UserModel.findOne({ authProviderID: sub }).setOptions({ sanitizeFilter: true }).exec();
+    }
     if (id) {
       return UserModel.findById(id).exec();
     }
