@@ -1,5 +1,5 @@
 const { GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList } = require('graphql');
-const SignType = require('./sign');
+const { SignFlatType } = require('./flats');
 const SignModel = require('../../models/sign');
 
 const UserType = new GraphQLObjectType({
@@ -11,12 +11,10 @@ const UserType = new GraphQLObjectType({
     displayPicture: { type: GraphQLString },
     authProviderID: { type: GraphQLString },
     signs: {
-      type: new GraphQLList(SignType),
-      resolve(parent) {
-        return SignModel.find({ _id: parent.signs }).exec();
-      },
+      type: new GraphQLList(SignFlatType),
+      resolve: (parent) => SignModel.find({ _id: parent.signs }).setOptions({ sanitizeFilter: true }).exec(),
     },
   }),
 });
 
-module.exports = UserType;
+module.exports = { UserType };

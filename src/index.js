@@ -1,11 +1,6 @@
-//TODO: Check if pm2-runtme works
 // Libraries
 const express = require('express');
-const jwt = require('jsonwebtoken');
-const jwksClient = require('jwks-rsa');
 const { ApolloServer } = require('apollo-server-express');
-const fetch = require('node-fetch');
-
 const cors = require('cors');
 
 // GraphQL Schema
@@ -13,6 +8,7 @@ const schema = require('./graphql/index.js');
 
 // Utilities
 const logger = require('./config/winston.js');
+const { decodeTokenFromHeader, addCreatedAndUpdatedBy, addUpdatedBy } = require('./utils/index.js');
 
 // Initialize Firebase, Mongoose, Cloudinary Admin SDK
 require('./config/mongoose.js');
@@ -21,19 +17,6 @@ require('./config/cloudinary.js');
 
 // Create Express app instance
 const app = express();
-
-const AUTH0_DOMAIN = 'signit.eu.auth0.com';
-
-const authClient = jwksClient({
-  jwksUri: `https://${AUTH0_DOMAIN}/.well-known/jwks.json`,
-});
-
-const getKey = (header, callback) => {
-  authClient.getSigningKey(header.kid, (err, key) => {
-    const signingKey = key.getPublicKey();
-    callback(null, signingKey);
-  });
-};
 
 // Setup Cross-Origin Resource Sharing for the development environment
 // localhost:3000 would be the frontend port on which the app is running
@@ -56,7 +39,6 @@ const corsOptions = {
 
 // Middlewares
 // JSON and Encoded URL Body Parser, Use Cors
-app.use(express.json());
 app.use(cors(corsOptions));
 
 async function startServer() {
@@ -67,43 +49,13 @@ async function startServer() {
     playground: process.env.NODE_ENV !== 'production',
     debug: process.env.NODE_ENV !== 'production',
     context: async ({ req }) => {
-      const authHeader = req.headers.authorization;
-      const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : null;
-      const decodedToken = await new Promise((resolve, reject) => {
-        jwt.verify(
-          token,
-          getKey,
-          {
-            algorithms: ['RS256'],
-            audience: [`https://${AUTH0_DOMAIN}/userinfo`],
-            issuer: `https://${AUTH0_DOMAIN}/`,
-          },
-          (err, decoded) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(decoded);
-            }
-          }
-        );
-      }).catch((err) => {
-        logger.error(err);
-        return null;
-      });
-      if (!decodedToken) {
-        return { decodedToken };
-      }
-      const userDetailsByIdUrl = `https://${AUTH0_DOMAIN}/api/v2/users/${decodedToken.sub}`;
-      const userDetails = await fetch(userDetailsByIdUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => res.json())
-        .catch(() => null);
-
+      const decodedToken = await decodeTokenFromHeader(req.headers.authorization);
+      const addCreatedAndUpdatedByWithUser = addCreatedAndUpdatedBy.bind(null, decodedToken);
+      const addUpdatedByWithUser = addUpdatedBy.bind(null, decodedToken);
       return {
-        decodedToken: { email: userDetails?.email, email_verified: userDetails?.email_verified, ...decodedToken },
+        decodedToken,
+        addCreatedAndUpdatedByWithUser,
+        addUpdatedByWithUser,
       };
     },
   });

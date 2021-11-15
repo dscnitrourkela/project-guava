@@ -5,7 +5,7 @@ module.exports = {
     {
       name: 'dev',
       script: './src/index.js',
-      watch: '.',
+      watch: ['src'],
       env: {
         NODE_ENV: 'development',
       },

@@ -103,12 +103,14 @@ const requestSchema = new Schema(
       default: 'Arial',
     },
     createdBy: {
-      type: Schema.ObjectId,
-      required: false, // TODO: change to true later
+      type: String,
+      required: true,
+      default: 'system',
     },
     updatedBy: {
-      type: Schema.ObjectId,
-      required: false, // TODO: change to true later
+      type: String,
+      required: true,
+      default: 'system',
     },
     schemaVersion: {
       type: Number,

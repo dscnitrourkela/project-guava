@@ -1,20 +1,19 @@
 const { GraphQLString, GraphQLNonNull, GraphQLError } = require('graphql');
 
 // Type Defs
-const UserType = require('../types/user');
+const { UserType } = require('../types');
 
 const User = require('../../models/user');
 
-const { addCreatedAndUpdatedBy } = require('../../utils/index');
-
 const createUser = {
+  name: 'createUser',
   type: UserType,
   args: {
     name: { type: GraphQLNonNull(GraphQLString) },
     displayPicture: { type: GraphQLNonNull(GraphQLString) },
   },
-  resolve(_, { name, displayPicture }, { decodedToken }) {
-    if (!decodedToken) {
+  resolve(_, { name, displayPicture }, { decodedToken, addCreatedAndUpdatedByWithUser }) {
+    if (!decodedToken || !decodedToken.email || !decodedToken.sub) {
       return new GraphQLError('Missing fields in the Auth Token');
     }
     const { email: mail, sub: authProviderID } = decodedToken;
@@ -23,7 +22,7 @@ const createUser = {
       name,
       displayPicture,
       authProviderID,
-      ...addCreatedAndUpdatedBy(null),
+      ...addCreatedAndUpdatedByWithUser(),
     });
     return user.save();
   },

@@ -1,14 +1,10 @@
 const { Schema, model } = require('mongoose');
 
-const UserModel = require('./user');
-
 const signSchema = new Schema(
   {
     userID: {
       type: Schema.ObjectId,
       required: true,
-      unique: true,
-      index: true,
     },
     name: {
       type: String,
@@ -37,14 +33,14 @@ const signSchema = new Schema(
       trim: true,
     },
     createdBy: {
-      type: Schema.ObjectId,
-      required: false, // TODO: change to true later
-      trim: true,
+      type: String,
+      required: true,
+      default: 'system',
     },
     updatedBy: {
-      type: Schema.ObjectId,
-      required: false, // TODO: change to true later
-      trim: true,
+      type: String,
+      required: true,
+      default: 'system',
     },
     schemaVersion: {
       type: Number,
@@ -54,9 +50,5 @@ const signSchema = new Schema(
   },
   { timestamps: true }
 );
-
-signSchema.post('save', async (sign) => {
-  await UserModel.findOneAndUpdate({ _id: sign.userID }, { $push: { signs: sign._id } }, { new: true });
-});
 
 module.exports = model('sign', signSchema);

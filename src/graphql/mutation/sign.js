@@ -1,41 +1,48 @@
-const { GraphQLString, GraphQLNonNull, GraphQLID } = require('graphql');
+const { GraphQLString, GraphQLNonNull } = require('graphql');
+const mongoose = require('mongoose');
 
 // Type Defs
-const SignType = require('../types/sign');
+const { SignType } = require('../types/');
 
 const UserModel = require('../../models/user');
 const SignModel = require('../../models/sign');
 
-const { addCreatedAndUpdatedBy } = require('../../utils/index');
 const { GraphQLError } = require('graphql');
 
 const createSign = {
+  name: 'createSign',
   type: SignType,
   args: {
-    userID: { type: GraphQLID },
-    userMail: { type: GraphQLString },
     name: { type: GraphQLNonNull(GraphQLString) },
     image: { type: GraphQLNonNull(GraphQLString) },
     designation: { type: GraphQLNonNull(GraphQLString) },
   },
-  async resolve(_, { userID, userMail, name, image, designation }) {
-    if (userID) {
-      const ifUserExists = await UserModel.exists({ _id: userID }).exec();
-      if (ifUserExists) {
-        const sign = new SignModel({ userID, userMail, name, image, designation, ...addCreatedAndUpdatedBy(null) });
-        return sign.save();
-      }
+  async resolve(_, { name, image, designation }, { decodedToken, addCreatedAndUpdatedByWithUser }) {
+    if (!decodedToken || !decodedToken.sub) {
+      return new GraphQLError('Missing fields in the Auth Token');
+    }
+    const { sub } = decodedToken;
+    const userFromDB = await UserModel.findOne({ authProviderID: sub }).setOptions({ sanitizeFilter: true }).exec();
+    if (!userFromDB._id) {
       return new GraphQLError('User Not in Database');
     }
-    if (userMail) {
-      const userID = await UserModel.findOne({ mail: userMail }, '_id').exec();
-      if (userID) {
-        const sign = new SignModel({ userID, userMail, name, image, designation, ...addCreatedAndUpdatedBy(null) });
-        return sign.save();
-      }
-      return new GraphQLError('User Not in Database');
-    }
-    return new GraphQLError('Missing fields');
+    const session = await mongoose.startSession();
+    let response;
+    await session.withTransaction(async () => {
+      const signToSave = new SignModel({
+        userID: userFromDB._id,
+        name,
+        image,
+        designation,
+        ...addCreatedAndUpdatedByWithUser(),
+      });
+      const signWithID = await signToSave.save();
+      userFromDB.signs.push(signWithID._id);
+      await userFromDB.save();
+      response = signWithID;
+    });
+    session.endSession();
+    return response;
   },
 };
 
