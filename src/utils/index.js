@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 const fetch = require('node-fetch');
+const logger = require('../config/winston.js');
 
 const AUTH0_DOMAIN = 'signit.eu.auth0.com';
 
@@ -27,24 +28,28 @@ const getKey = (header, callback) => {
 
 const decodeTokenFromHeader = async (authHeader) => {
   const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : null;
-  const decodedToken = await new Promise((resolve, reject) => {
-    jwt.verify(
-      token,
-      getKey,
-      {
-        algorithms: ['RS256'],
-        audience: [`https://${AUTH0_DOMAIN}/userinfo`],
-        issuer: `https://${AUTH0_DOMAIN}/`,
-      },
-      (err, decoded) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(decoded);
+  const decodedToken =
+    token &&
+    (await new Promise((resolve, reject) => {
+      jwt.verify(
+        token,
+        getKey,
+        {
+          algorithms: ['RS256'],
+          audience: [`https://${AUTH0_DOMAIN}/userinfo`],
+          issuer: `https://${AUTH0_DOMAIN}/`,
+        },
+        (err, decoded) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(decoded);
+          }
         }
-      }
-    );
-  }).catch(() => null);
+      );
+    }).catch((err) => {
+      logger.error(`${err} with token: ${token}`);
+    }));
   if (!decodedToken) {
     return { decodedToken };
   }
@@ -55,7 +60,9 @@ const decodeTokenFromHeader = async (authHeader) => {
     },
   })
     .then((res) => res.json())
-    .catch(() => null);
+    .catch((err) => {
+      logger.error(`${err} with token: ${token}`);
+    });
 
   return {
     email: userDetails?.email,
