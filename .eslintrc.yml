@@ -86,7 +86,6 @@ rules:
   radix: error
   require-await: error
   require-unicode-regexp: error
-  wrap-iife: error
   yoda: error
 
   # Group - Variables

@@ -1,4 +1,4 @@
-const { GraphQLString, GraphQLObjectType, GraphQLID } = require('graphql');
+const { GraphQLString, GraphQLObjectType, GraphQLID, GraphQLList } = require('graphql');
 
 const SignFlatType = new GraphQLObjectType({
   name: 'SignFlatType',
@@ -21,7 +21,20 @@ const UserFlatType = new GraphQLObjectType({
   }),
 });
 
+const UserFlatTypeWithSign = new GraphQLObjectType({
+  name: 'UserFlatTypeWithSign',
+  fields: () => ({
+    id: { type: GraphQLID },
+    mail: { type: GraphQLString },
+    name: { type: GraphQLString },
+    displayPicture: { type: GraphQLString },
+    authProviderID: { type: GraphQLString },
+    signs: { type: GraphQLList(SignFlatType) },
+  }),
+});
+
 module.exports = {
   SignFlatType,
   UserFlatType,
+  UserFlatTypeWithSign,
 };
