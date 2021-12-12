@@ -138,4 +138,88 @@ const createRequest = {
   },
 };
 
-module.exports = { createRequest };
+const updateRequestApproval = {
+  name: 'updateRequestApproval',
+  type: RequestType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLID) },
+    status: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  async resolve(_, { id, status }, { decodedToken, addUpdatedByWithUser }) {
+    if (status !== 'APPROVED' && status !== 'REJECTED') {
+      return new GraphQLError('Invalid status');
+    }
+
+    if (!decodedToken || !decodedToken.sub) {
+      return new GraphQLError('Missing fields in the Auth Token');
+    }
+    const { sub } = decodedToken;
+    const userFromDB = await UserModel.findOne({ authProviderID: sub }).setOptions({ sanitizeFilter: true }).exec();
+    if (!userFromDB._id) {
+      return new GraphQLError('Approval User Not in Database');
+    }
+    const request = await Request.findById(id).exec();
+    if (!request) {
+      return new GraphQLError('Request Not Found');
+    }
+    if (request.status !== 'REVIEW') {
+      return new GraphQLError('Request is not in review status');
+    }
+    const orderOfApprover = request.approvers.findIndex(
+      (approver) => approver.user.toString() === userFromDB._id.toString() && approver.status === 'PENDING'
+    );
+    if (orderOfApprover === -1) {
+      return new GraphQLError('User Not in Pending Approvers');
+    }
+    const isLastApprover = request.approvers.length - 1 === orderOfApprover;
+    const isNextApprover = request.approvers
+      .slice(0, orderOfApprover)
+      .every((approver) => approver.status === 'APPROVED');
+
+    if (!isNextApprover) {
+      return new GraphQLError('User Not Next Approver');
+    }
+
+    request.approvers[orderOfApprover].status = status;
+    request.approvers[orderOfApprover].updatedAt = new Date();
+    if (isLastApprover) {
+      request.status = 'APPROVED';
+    }
+    request.updatedBy = addUpdatedByWithUser().updatedBy;
+    return request.save();
+  },
+};
+
+const sendRequestToReview = {
+  name: 'sendRequestToReview',
+  type: RequestType,
+  args: {
+    id: { type: new GraphQLNonNull(GraphQLID) },
+  },
+  async resolve(_, { id }, { decodedToken, addUpdatedByWithUser }) {
+    if (!decodedToken || !decodedToken.sub) {
+      return new GraphQLError('Missing fields in the Auth Token');
+    }
+    const { sub } = decodedToken;
+    const userFromDB = await UserModel.findOne({ authProviderID: sub }).setOptions({ sanitizeFilter: true }).exec();
+    if (!userFromDB._id) {
+      return new GraphQLError('User Not in Database');
+    }
+    const request = await Request.findById(id).exec();
+    if (!request) {
+      return new GraphQLError('Request Not Found');
+    }
+    if (request.status !== 'DRAFT') {
+      return new GraphQLError('Request is not in draft status');
+    }
+    const isInitiator = request.initiator.toString() === userFromDB._id.toString();
+    if (!isInitiator) {
+      return new GraphQLError('User Not Initiator');
+    }
+    request.status = 'REVIEW';
+    request.updatedBy = addUpdatedByWithUser().updatedBy;
+    return request.save();
+  },
+};
+
+module.exports = { createRequest, updateRequestApproval, sendRequestToReview };
