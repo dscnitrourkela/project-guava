@@ -4,16 +4,18 @@ const {
   GraphQLNonNull,
   GraphQLError,
   GraphQLList,
-  GraphQLObjectType,
   GraphQLID,
   GraphQLInputObjectType,
+  GraphQLFloat,
 } = require('graphql');
-
+const { GraphQLJSON } = require('graphql-type-json');
 // Type Defs
 const { RequestType } = require('../types/');
 
 const Request = require('../../models/request');
 const UserModel = require('../../models/user');
+
+const { validateRequest } = require('./validateRequest');
 
 const approverInput = new GraphQLInputObjectType({
   name: 'ApproverInput',
@@ -21,7 +23,7 @@ const approverInput = new GraphQLInputObjectType({
     userID: { type: GraphQLNonNull(GraphQLID) },
     xDimension: { type: GraphQLNonNull(GraphQLInt) },
     yDimension: { type: GraphQLNonNull(GraphQLInt) },
-    scale: { type: GraphQLNonNull(GraphQLInt) },
+    scale: { type: GraphQLNonNull(GraphQLFloat) },
   }),
 });
 
@@ -31,7 +33,7 @@ const templateInput = new GraphQLInputObjectType({
     src: { type: GraphQLNonNull(GraphQLString) },
     xDimension: { type: GraphQLNonNull(GraphQLInt) },
     yDimension: { type: GraphQLNonNull(GraphQLInt) },
-    data: { type: GraphQLNonNull(GraphQLString) },
+    data: { type: GraphQLNonNull(GraphQLJSON) },
   }),
 });
 
@@ -39,6 +41,8 @@ const pixelMapInput = new GraphQLInputObjectType({
   name: 'PixelMapInput',
   fields: () => ({
     columnName: { type: GraphQLNonNull(GraphQLString) },
+    xDimension: { type: GraphQLNonNull(GraphQLInt) },
+    yDimension: { type: GraphQLNonNull(GraphQLInt) },
     fontSize: { type: GraphQLNonNull(GraphQLInt) },
     fontWeight: { type: GraphQLNonNull(GraphQLInt) },
     fontColour: { type: GraphQLNonNull(GraphQLString) },
@@ -64,22 +68,73 @@ const createRequest = {
     font: { type: GraphQLNonNull(GraphQLString) },
   },
   async resolve(_, args, { decodedToken, addCreatedAndUpdatedByWithUser }) {
-    // if (!decodedToken?.sub) {
-    //   return new GraphQLError('Missing fields in the Auth Token');
-    // }
-    const { sub: authProviderID } = decodedToken;
+    if (!decodedToken || !decodedToken.sub) {
+      return new GraphQLError('Missing fields in the Auth Token');
+    }
+    const { sub } = decodedToken;
+    const userFromDB = await UserModel.findOne({ authProviderID: sub }).setOptions({ sanitizeFilter: true }).exec();
+    if (!userFromDB._id) {
+      return new GraphQLError('User Not in Database');
+    }
+    const { hasErrors, errors } = await validateRequest(args);
+    if (hasErrors) {
+      throw new GraphQLError(errors);
+    }
 
-    const userID = await UserModel.findOne({ authProviderID }, '_id').exec();
-    // const request = new Request({
-    //   userID,
-    //   mail,
-    //   name,
-    //   displayPicture,
-    //   authProviderID,
-    //   ...addCreatedAndUpdatedByWithUser(),
-    // });
-    // return request.save();
-    return { id: '1' };
+    const initiator = userFromDB._id;
+    const status = 'DRAFT';
+    const approvers = args.approvers.map((approver) => {
+      const { userID, xDimension, yDimension, scale } = approver;
+      return {
+        user: userID,
+        status: 'PENDING',
+        pixel: {
+          x: xDimension,
+          y: yDimension,
+        },
+        scale,
+      };
+    });
+    const certificateInfo = {
+      template: {
+        src: args.template.src,
+        blurHash: 'TODO: Blurhash',
+        dimensions: {
+          x: args.template.xDimension,
+          y: args.template.yDimension,
+        },
+      },
+      data: args.template.data,
+    };
+
+    const pixelMap = args.pixelMap.map((pixel) => {
+      const { columnName, xDimension, yDimension, fontSize, fontWeight, fontColour } = pixel;
+      return {
+        columnName,
+        pixel: {
+          x: xDimension,
+          y: yDimension,
+        },
+        fontSize,
+        fontWeight,
+        fontColour,
+      };
+    });
+    const { availabilityDate, title, description, font } = args;
+
+    const request = new Request({
+      initiator,
+      availabilityDate,
+      title,
+      description,
+      status,
+      approvers,
+      certificateInfo,
+      pixelMap,
+      font,
+      ...addCreatedAndUpdatedByWithUser(),
+    });
+    return request.save();
   },
 };
 

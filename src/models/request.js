@@ -36,7 +36,7 @@ const requestSchema = new Schema(
     },
     approvers: [
       {
-        user: { type: Schema.ObjectId, required: true },
+        user: { type: Schema.ObjectId, required: true, index: true },
         status: {
           type: String,
           enum: ['REJECTED', 'APPROVED', 'PENDING'],
@@ -52,7 +52,7 @@ const requestSchema = new Schema(
           required: true,
           default: 1,
         },
-        approvedAt: {
+        updatedAt: {
           type: Date,
           required: false,
         },
@@ -68,9 +68,8 @@ const requestSchema = new Schema(
         },
       },
       data: {
-        type: String,
+        type: [Schema.Types.Mixed],
         required: true,
-        trim: true,
       },
     },
     pixelMap: [
