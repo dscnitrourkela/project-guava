@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+const { Schema, model } = require('mongoose');
 
 const requestSchema = new Schema(
   {
     initiator: {
       type: Schema.ObjectId,
       required: true,
+      index: true,
     },
     availabilityDate: {
       type: Date,
@@ -29,18 +29,19 @@ const requestSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ['Un-Initiated', 'Initiated', 'In-Process', 'Approved', 'Generated'],
+      index: true,
+      enum: ['DRAFT', 'REVIEW', 'APPROVED', 'GENERATED'],
       required: true,
-      default: 'Un-Initiated',
+      default: 'DRAFT',
     },
     approvers: [
       {
-        user: { type: Schema.ObjectId, required: true },
+        user: { type: Schema.ObjectId, required: true, index: true },
         status: {
           type: String,
-          enum: ['Rejected', 'Approved', 'Pending'],
+          enum: ['REJECTED', 'APPROVED', 'PENDING'],
           required: true,
-          default: 'Pending',
+          default: 'PENDING',
         },
         pixel: {
           x: { type: Number, required: true },
@@ -51,7 +52,7 @@ const requestSchema = new Schema(
           required: true,
           default: 1,
         },
-        approvedAt: {
+        updatedAt: {
           type: Date,
           required: false,
         },
@@ -67,9 +68,8 @@ const requestSchema = new Schema(
         },
       },
       data: {
-        type: String,
+        type: [Schema.Types.Mixed],
         required: true,
-        trim: true,
       },
     },
     pixelMap: [
@@ -121,4 +121,4 @@ const requestSchema = new Schema(
   { timestamps: true }
 );
 
-export default model('request', requestSchema);
+module.exports = model('request', requestSchema);
